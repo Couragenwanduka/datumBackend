@@ -15,5 +15,11 @@
     "url": "https://github.com/Couragenwanduka/datumBackend/issues"
   },
   "homepage": "https://github.com/Couragenwanduka/datumBackend#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.19.2",
+    "joi": "^17.13.3",
+    "mongoose": "^8.5.2"
+  }
 }
