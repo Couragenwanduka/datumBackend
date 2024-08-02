@@ -1,0 +1,19 @@
+{
+  "name": "datum-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Couragenwanduka/datumBackend.git"
+  },
+  "author": "Courage Nduka and Matthew Okechukwu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Couragenwanduka/datumBackend/issues"
+  },
+  "homepage": "https://github.com/Couragenwanduka/datumBackend#readme",
+  "description": ""
+}
