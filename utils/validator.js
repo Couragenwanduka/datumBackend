@@ -20,25 +20,23 @@ export const validateRegistration = async (req) => {
         };
         const validatedStudent = await studentRegistrationSchema.validateAsync(studentData);
 
-        // Extract and validate parent/guardian data
-        const parentGuardianData = {
-            studentId: req.body.studentId,
-            firstName: req.body.parentFirstName,
-            lastName: req.body.parentLastName,
-            relationship: req.body.relationship,
-            contactNumber: req.body.contactNumber,
-            email: req.body.parentEmail,
-            occupation: req.body.occupation
-        };
+        return  validatedStudent
+            
+    } catch (error) {
+        throw new Error(`Validation error: ${error.message}`);
+    }
+};
+
+export const validateParentGuardian = async (firstName, lastName, relationship, contactNumber, email, password) => {
+    try {
+        // Create the data object to be validated
+        const parentGuardianData = { firstName, lastName, relationship, contactNumber, email, password };
+
+        // Validate the parent/guardian data using Joi schema
         const validatedParentGuardian = await parentGuardianRegistrationSchema.validateAsync(parentGuardianData);
 
-        // Return validated data
-        return {
-            student: validatedStudent,
-            parentGuardian: validatedParentGuardian
-        };
+        return validatedParentGuardian;
     } catch (error) {
-        // Handle validation errors
         throw new Error(`Validation error: ${error.message}`);
     }
 };

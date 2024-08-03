@@ -1,11 +1,6 @@
 import mongoose from "mongoose";
 
 const parentGuardianSchema = new mongoose.Schema({
-    studentId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Student",
-        required: true
-    },
     firstName: {
         type: String,
         required: true
@@ -22,10 +17,6 @@ const parentGuardianSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    occupation: {
-        type: String,
-        required: true
-    },
     email: {
         type: String,
         required: true
@@ -33,7 +24,11 @@ const parentGuardianSchema = new mongoose.Schema({
     password:{
         type: String,
         required: true,
-    }
+    },
+    studentId: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Student",
+    }]
 })
 
 const ParentGuardian = mongoose.model("ParentGuardian", parentGuardianSchema);
