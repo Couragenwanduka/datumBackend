@@ -14,33 +14,30 @@ datasource db {
 }
 
 model Parent {
-  id             Int       @id @default(autoincrement())
-  firstName      String
-  lastName       String
-  relationship   String?
-  contactNumber  String?
-  email          String    @unique
-  password       String
-  createdAt      DateTime  @default(now())
-  students       Student[] @relation("ParentStudents")
+  id            Int        @id @default(autoincrement())
+  firstName     String
+  lastName      String
+  relationship  String?
+  contactNumber String?
+  email         String     @unique
+  password      String
+  createdAt     DateTime   @default(now())
+  students      Student[]  @relation("StudentParent")
 }
 
 model Student {
-  id              Int      @id @default(autoincrement())
-  firstName       String
-  lastName        String
-  dateOfBirth     DateTime
-  gender          String?
-  nationality     String?
-  currentAddress  String?
+  id               Int      @id @default(autoincrement())
+  firstName        String
+  lastName         String
+  dateOfBirth      DateTime
+  gender           String?
+  nationality      String?
+  currentAddress   String?
   permanentAddress String?
-  enrollmentDate  DateTime
-  gradeLevel      String?
-  classSection    String?
-  photo           String?
-
-  parent          Parent?  @relation("ParentStudents", fields: [parentEmail], references: [email])
+  enrollmentDate   DateTime
+  gradeLevel       String?
+  classSection     String?
+  photo            String?
+  parentEmail      String?
+  parent           Parent?  @relation("StudentParent", fields: [parentEmail], references: [email])
 }
-
-
-

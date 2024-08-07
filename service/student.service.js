@@ -16,9 +16,12 @@ export const saveStudent = async (firstName, lastName, dateOfBirth, gender, nati
                 enrollmentDate: new Date(enrollmentDate),
                 gradeLevel,
                 classSection,
-                photo,
-                parentEmail,
-                parent:parentEmail
+                photo, 
+                parent: {
+                    connect: {
+                        email: parentEmail,
+                    },
+                },
             },
         });
         return student.id;

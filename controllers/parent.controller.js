@@ -1,4 +1,4 @@
-import { findByEmail } from "../service/parent.service.js";
+import { findByEmail, getStudentsByParentEmail } from "../service/parent.service.js";
 import { validateLogin } from "../utils/validator.js";
 import { comparePassword } from "../utils/bcrypt.js";
 
@@ -17,6 +17,15 @@ export const LoginParent = async(req, res) => {
 
       const checkPassword = await comparePassword(password,existingParentGuardian.password);
       if(!checkPassword) return res.status(400).send('Invalid password');
+
+      // get student details
+      const parentWithStudents = await getStudentsByParentEmail(email);
+
+      // send the response
+      res.status(200).send({
+        message: 'user successfully logged in',
+        students: parentWithStudents
+      });
       
       res.status(200).send('message: user successfully logged in')
     }catch(error){
