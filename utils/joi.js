@@ -50,10 +50,6 @@ export const studentRegistrationSchema = Joi.object({
 
 
 export const parentGuardianRegistrationSchema = Joi.object({
-    studentId: Joi.string().required().messages({
-        'string.base': 'Student ID should be a type of string',
-        'any.required': 'Student ID is required'
-    }),
     firstName: Joi.string().required().messages({
         'string.base': 'First name should be a type of string',
         'any.required': 'First name is required'
@@ -75,10 +71,6 @@ export const parentGuardianRegistrationSchema = Joi.object({
         'string.email': 'Email must be a valid email',
         'any.required': 'Email is required'
     }),
-    occupation: Joi.string().required().messages({
-        'string.base': 'Occupation should be a type of string',
-        'any.required': 'Occupation is required'
-    })
 });
 
 export const parentLogin = Joi.object({

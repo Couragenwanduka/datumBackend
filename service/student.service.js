@@ -1,24 +1,28 @@
-import { insertStudent } from "../model/student.js";
+import { PrismaClient } from '@prisma/client';
 
-export const saveStudent = async (firstName, lastName, dateOfBirth, gender, nationality, currentAddress, permanentAddress, enrollmentDate, gradeLevel, classSection, photo) => {
-    try{
-        const studentData = [
-            firstName,
-            lastName,
-            dateOfBirth,
-            gender,
-            nationality,
-            currentAddress,
-            permanentAddress,
-            enrollmentDate,
-            gradeLevel,
-            classSection,
-            photo,
-        ];
-    
-       const student = await insertStudent(studentData);
-       return student;
-    }catch(error){
-        throw new Error(`Error saving student: ${error.message}`);
+const prisma = new PrismaClient();
+
+export const saveStudent = async (firstName, lastName, dateOfBirth, gender, nationality, currentAddress, permanentAddress, enrollmentDate, gradeLevel, classSection, photo, parentEmail) => {
+    try {
+        const student = await prisma.student.create({
+            data: {
+                firstName,
+                lastName,
+                dateOfBirth: new Date(dateOfBirth),
+                gender,
+                nationality,
+                currentAddress,
+                permanentAddress,
+                enrollmentDate: new Date(enrollmentDate),
+                gradeLevel,
+                classSection,
+                photo,
+                parentEmail,
+                parent:parentEmail
+            },
+        });
+        return student.id;
+    } catch (error) {
+        throw new Error(`Error creating student: ${error.message}`);
     }
 }

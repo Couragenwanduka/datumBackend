@@ -27,10 +27,10 @@ export const validateRegistration = async (req) => {
     }
 };
 
-export const validateParentGuardian = async (firstName, lastName, relationship, contactNumber, email, password) => {
+export const validateParentGuardian = async (firstName, lastName, relationship, contactNumber, email) => {
     try {
         // Create the data object to be validated
-        const parentGuardianData = { firstName, lastName, relationship, contactNumber, email, password };
+        const parentGuardianData = { firstName, lastName, relationship, contactNumber, email};
 
         // Validate the parent/guardian data using Joi schema
         const validatedParentGuardian = await parentGuardianRegistrationSchema.validateAsync(parentGuardianData);
