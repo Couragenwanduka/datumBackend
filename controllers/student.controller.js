@@ -2,7 +2,6 @@ import { saveStudent } from "../service/student.service";
 import { addStudent } from "../service/parent.service";
 import { createParent } from "./parent.controller";
 
-
 export const createStudent = async(req, res) => {
     try{
         const { parent, students } = req.body;
