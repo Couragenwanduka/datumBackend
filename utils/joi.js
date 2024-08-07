@@ -80,3 +80,15 @@ export const parentGuardianRegistrationSchema = Joi.object({
         'any.required': 'Occupation is required'
     })
 });
+
+export const parentLogin = Joi.object({
+    email: Joi.string().required().messages({
+        'string.base': 'Email should be a type of string',
+        'string.email': 'Email must be a valid email',
+        'any.required': 'Email is required'
+    }),
+    password: Joi.string().required().messages({
+        'string.base': 'Password must be a type of string',
+          'any.required': 'Password is required'
+    })
+})

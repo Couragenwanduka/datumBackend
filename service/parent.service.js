@@ -1,4 +1,4 @@
-import { insertParent, findParentByEmail, addStudentToParent } from "../model/parentGuardian";
+import { insertParent, findParentByEmail, addStudentToParent } from "../model/parentGuardian.js";
 
 export const saveParent = async(firstName, lastName, relationship, contactNumber, email, password) => {
     try{

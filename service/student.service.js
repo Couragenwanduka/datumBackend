@@ -1,4 +1,4 @@
-import { insertStudent } from "../model/student";
+import { insertStudent } from "../model/student.js";
 
 export const saveStudent = async (firstName, lastName, dateOfBirth, gender, nationality, currentAddress, permanentAddress, enrollmentDate, gradeLevel, classSection, photo) => {
     try{

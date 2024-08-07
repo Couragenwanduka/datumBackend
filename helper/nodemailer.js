@@ -1,4 +1,4 @@
-const nodemailer = require("nodemailer");
+import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -10,13 +10,13 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const sendOnboardingMessage = async(email,) => {
+export const sendOnboardingMessage = async(email, password) => {
     try {
-      const info = await transporter.sendMail({
+      const info = transporter.sendMail({
         from: process.env.googleUsername,
         to: email,
         subject: "Welcome to Courage Secondary school!",
-        html:'',
+        body:`Welcome to CIS , Here are your login details${email}, ${password}`,
       });
       console.log("Message sent: %s", info.messageId);
     } catch (error) {

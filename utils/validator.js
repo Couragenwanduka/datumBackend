@@ -1,4 +1,4 @@
-import { studentRegistrationSchema, parentGuardianRegistrationSchema } from "./joi";
+import { studentRegistrationSchema, parentGuardianRegistrationSchema, parentLogin } from "./joi.js";
 
 export const validateRegistration = async (req) => {
     try {
@@ -40,3 +40,15 @@ export const validateParentGuardian = async (firstName, lastName, relationship, 
         throw new Error(`Validation error: ${error.message}`);
     }
 };
+
+export const validateLogin = async(email, password) => {
+    try{
+       const loginData = {email, password};
+
+       const login = await parentLogin.validateAsync(loginData);
+
+       return login
+    }catch(error) {
+        throw new Error(`Validation error: ${error.message}`);
+    }
+}
