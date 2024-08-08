@@ -17,8 +17,8 @@ model Parent {
   id            Int        @id @default(autoincrement())
   firstName     String
   lastName      String
-  relationship  String?
-  contactNumber String?
+  relationship  String
+  contactNumber String
   email         String     @unique
   password      String
   createdAt     DateTime   @default(now())
@@ -30,14 +30,38 @@ model Student {
   firstName        String
   lastName         String
   dateOfBirth      DateTime
-  gender           String?
-  nationality      String?
-  currentAddress   String?
-  permanentAddress String?
+  gender           String
+  nationality      String
+  currentAddress   String
+  permanentAddress String
   enrollmentDate   DateTime
-  gradeLevel       String?
-  classSection     String?
-  photo            String?
-  parentEmail      String?
-  parent           Parent?  @relation("StudentParent", fields: [parentEmail], references: [email])
+  gradeLevel       String
+  classSection     String
+  photo            String
+  parentEmail      String
+  parent           Parent  @relation("StudentParent", fields: [parentEmail], references: [email])
+}
+
+enum Role {
+  Admin
+  Teacher
+}
+
+model Administrator {
+  id                Int        @id @default(autoincrement())
+  firstName         String
+  lastName          String
+  gender            String
+  dateOfBirth       DateTime
+  email             String     @unique
+  password          String
+  contactNumber     String     @unique
+  currentAddress    String
+  permanentAddress  String
+  subject           String
+  hireDate          String
+  qualification     String
+  photo             String
+  role             Role
+  createdAt      DateTime   @default(now())
 }

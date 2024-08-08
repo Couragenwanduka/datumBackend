@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from "../prisma/dbconnect.js";
 
 export const saveStudent = async (firstName, lastName, dateOfBirth, gender, nationality, currentAddress, permanentAddress, enrollmentDate, gradeLevel, classSection, photo, parentEmail) => {
     try {
@@ -29,3 +27,4 @@ export const saveStudent = async (firstName, lastName, dateOfBirth, gender, nati
         throw new Error(`Error creating student: ${error.message}`);
     }
 }
+

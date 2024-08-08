@@ -6,6 +6,7 @@ import { hashPassword } from "../utils/bcrypt.js";
 import { saveParent } from "../service/parent.service.js";
 import { validateParentGuardian } from "../utils/validator.js";
 import { findByEmail } from "../service/parent.service.js";
+import { findTeacherByEmail } from "../service/admin.service.js";
 
 export const createStudent = async(req, res) => {
     try{
@@ -19,6 +20,9 @@ export const createStudent = async(req, res) => {
         //  // Check if a parent guardian with the same email already exists
          const existingParentGuardian = await findByEmail(email);
          if (existingParentGuardian) return res.status(400).send("A parent guardian with the same email already exists.");
+
+         const checkForEmail = await findTeacherByEmail(email)
+         if (checkForEmail) return res.status(400).send("A teacher with the same email already exists.");
 
          const password = createPassword()
          const hashedPassword = await hashPassword(password);
@@ -50,9 +54,9 @@ export const createStudent = async(req, res) => {
             }
         }
         
-         res.status(201).send('Parent and student created successfully');
+         res.status(201).json('Parent and student created successfully');
     }catch(error){
         console.log(error)
-        res.status(500).send(`Error creating parent and student: ${error.message}`);
+        res.status(500).json(`Error creating parent and student: ${error.message}`);
     }
 }

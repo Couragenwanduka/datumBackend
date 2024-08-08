@@ -1,4 +1,4 @@
-import { studentRegistrationSchema, parentGuardianRegistrationSchema, parentLogin } from "./joi.js";
+import { studentRegistrationSchema, parentGuardianRegistrationSchema, LoginSchema, teacherSchema } from "./joi.js";
 
 export const validateRegistration = async (req) => {
     try {
@@ -45,10 +45,22 @@ export const validateLogin = async(email, password) => {
     try{
        const loginData = {email, password};
 
-       const login = await parentLogin.validateAsync(loginData);
+       const login = await LoginSchema.validateAsync(loginData);
 
        return login
     }catch(error) {
         throw new Error(`Validation error: ${error.message}`);
     }
+}
+
+export const validateTeacher = async(firstName, lastName, gender, dateOfBirth, email, contactNumber, currentAddress, permanentAddress, subject, hireDate, qualification, photo, role) => {
+   try{
+        const teacherData = {firstName, lastName, gender, dateOfBirth, email, contactNumber, currentAddress, permanentAddress, subject, hireDate, qualification, photo, role};
+
+        const validatedTeacher = await teacherSchema.validateAsync(teacherData);
+
+        return validatedTeacher;
+   }catch(error){
+     throw new Error(`Validation error: ${error.message}`);
+   }
 }
