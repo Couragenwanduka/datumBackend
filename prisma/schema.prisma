@@ -65,3 +65,22 @@ model Administrator {
   role             Role
   createdAt      DateTime   @default(now())
 }
+
+model Result {
+  id             Int          @id @default(autoincrement())
+  firstName      String
+  lastName       String
+  subject        String
+  assignment     Float?
+  test           Float?
+  exam           Float?
+  grade          String
+  gradeLevel     String
+  classSection   String
+  term           String
+  teacher        Administrator
+  student        Student       @relation("StudentResult", fields: [studentId], references: [id])
+  studentId      Int
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}

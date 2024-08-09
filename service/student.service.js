@@ -28,3 +28,16 @@ export const saveStudent = async (firstName, lastName, dateOfBirth, gender, nati
     }
 }
 
+export const findStudentById = async(studentId) => {
+    try {
+        const student = await prisma.student.findUnique({
+            where: {
+                id: studentId,
+            },
+        });
+        return student;
+    } catch (error) {
+        throw new Error(`Error finding student: ${error.message}`);
+    }
+}
+

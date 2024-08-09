@@ -3,6 +3,8 @@ import express from 'express';
 import router from './router/student.route.js';
 import adminRouter from './router/admin.route.js';
 import parentRouter from './router/parent.route.js';
+import { createResult } from './controllers/result.controller.js';
+createResult()
 
 dotenv.config();
 
