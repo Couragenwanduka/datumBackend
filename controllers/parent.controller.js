@@ -5,6 +5,13 @@ import { findTeacherByEmail } from "../service/admin.service.js";
 import { findByEmail, getStudentsByParentEmail } from "../service/parent.service.js";
 
 
+/**
+ * Handles the login process for parents and teachers.
+ * Validates the provided login credentials (email and password), 
+ * checks if the user is registered as a parent or teacher, 
+ * verifies the password, and returns appropriate user details and a JWT token.
+ * If the user is not found or the password is incorrect, an error response is returned.
+ */
 export const LoginParent = async (req, res) => {
   try {
     const { email, password } = req.body;
