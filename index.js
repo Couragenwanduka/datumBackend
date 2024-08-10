@@ -16,7 +16,7 @@ app.use('/api/admin', adminRouter);
 app.use('/api/parent', parentRouter);
 
 app.get("/", function (req,res){
-   res.send("Welcome to Datum Development School App...")
+   res.send("Welcome to Datum Development School App... Delevoped by Courage Nduka and Ani Okechukwu")
 });
 
 app.listen(PORT, () => {
