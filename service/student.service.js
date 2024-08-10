@@ -27,4 +27,3 @@ export const saveStudent = async (firstName, lastName, dateOfBirth, gender, nati
         throw new Error(`Error creating student: ${error.message}`);
     }
 }
-

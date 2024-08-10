@@ -31,6 +31,8 @@ CREATE TABLE "Student" (
     CONSTRAINT "Student_pkey" PRIMARY KEY ("id")
 );
 
+
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Parent_email_key" ON "Parent"("email");
 

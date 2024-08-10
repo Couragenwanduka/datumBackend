@@ -15,6 +15,10 @@ app.use('/api/student', router);
 app.use('/api/admin', adminRouter);
 app.use('/api/parent', parentRouter);
 
+app.get("/", function (req,res){
+   res.send("Welcome to Datum Development School App...")
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
