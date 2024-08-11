@@ -17,7 +17,7 @@ export const saveStudent = async (firstName, lastName, dateOfBirth, gender, nati
                 photo, 
                 parent: {
                     connect: {
-                        email: parentEmail,
+                        email: parentEmail, 
                     },
                 },
             },

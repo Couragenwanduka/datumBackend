@@ -2,9 +2,9 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const saveSubject = async(subjectName, code, code, enrollments, attendance, createdAt, updatedAt) => {
+export const saveAttendance = async(subjectName, code, enrollments, attendance, createdAt, updatedAt) => {
     try {
-        const subject = await prisma.subject.create({
+        const atendance = await prisma.attendance.create({
             data: {
                 id,
                 subjectName,
@@ -12,12 +12,12 @@ export const saveSubject = async(subjectName, code, code, enrollments, attendanc
                 enrollments,
                 attendance,
                 createdAt,
-                updatedAt,
+                updatedAt, 
             },
         });
-        return subject.id;
+        return atendance.id;
     } catch (error) {
-        console.error(`Error creating subject: ${error.message}`);
+        console.error(`Error creating attendance: ${error.message}`);
         throw error;
     }
 }

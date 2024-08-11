@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL")  
 }
 
 model Parent {
@@ -35,6 +35,8 @@ model Student {
   currentAddress   String
   permanentAddress String
   enrollmentDate   DateTime
+  enrollments      Enrollment[]
+  attendance       Attendance[]
   gradeLevel       String
   classSection     String
   photo            String
@@ -43,13 +45,38 @@ model Student {
 }
 
 model Subject {
-  id                Int @id @default(autoincrement())
-  subjectName       String
-  code              String
-  enrollments       String
-  attendance        String
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  id              Int       @id @default(autoincrement())
+  name            String
+  code             String    @unique
+  enrollments     Enrollment[]
+  attendance      Attendance[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Enrollment {
+  id              Int  @id @default(autoincrement())
+  student         Student  @relation(fields: [studentId], references: [id])
+  studentId       Int
+  subject         Subject  @relation(fields: [subjectId], references: [id])
+  subjectId       Int
+  createdAt       DateTime @default(now())
+
+  @@unique([studentId, subjectId])
+}
+
+model Attendance {
+  id            Int      @id @default(autoincrement())
+  date          DateTime
+  status        String  // Example values: "Present", "Absent", "Late"
+  student    Student  @relation(fields: [studentId], references: [id])
+  studentId     Int
+  subject    Subject  @relation(fields: [subjectId], references: [id])
+  subjectId     Int
+  createdAt     DateTime @default(now())
+
+  @@unique([studentId, subjectId, date])
+
 }
 
 enum Role {
