@@ -96,7 +96,7 @@ export const createStudent = async(req, res) => {
     }
 }
 
-export const findAllStudents = async(req, res) => {
+export const getAllStudents = async(req, res) => {
     try{
         const students = await findAllStudents();
         res.status(200).json(students);

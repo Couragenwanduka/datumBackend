@@ -174,12 +174,12 @@ export const resultSchema = Joi.object({
     gradelevel: Joi.string().required().messages({
         'string.base': 'Grade level should be a type of string',
         'any.required': 'Grade level is required'
-    }) ,
+    }),
     term: Joi.string().required().messages({
         'string.base': 'Term should be a type of string',
         'any.required': 'Term is required'
     }),
-    teacher: Joi.string().required().message({
+    teacher: Joi.string().required().messages({
         'string.base': 'Teacher should be a type of string',
         'any.required': 'Teacher is required'
     }),
@@ -187,7 +187,8 @@ export const resultSchema = Joi.object({
         'string.base': 'Student ID should be a type of string',
         'any.required': 'Student ID is required'
     })
-})
+});
+
 
 export const linkParentAndStudentSchema = Joi.object({
     email: Joi.string().required().messages({

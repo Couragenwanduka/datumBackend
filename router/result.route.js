@@ -1,6 +1,6 @@
 import express from 'express';
 const resultRouter = express.Router();
-import { createResult, getResultByGradeLevelAndTerm, getResultByStudentId, getResultByGradelevelAndTeacher} from '../controllers/result.controller';
+import { createResult, getResultByGradeLevelAndTerm, getResultByStudentId, getResultByGradelevelAndTeacher} from '../controllers/result.controller.js';
 
 // Create a new result
 resultRouter.post('/createResult', createResult);

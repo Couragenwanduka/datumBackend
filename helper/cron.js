@@ -1,5 +1,5 @@
 import cron from 'node-cron';
-import { findAllStudents, updateAllstudent } from '../service/student.service';
+import { findAllStudents, updateAllstudent } from '../service/student.service.js';
 
 /**
  * Schedules a task to automatically promote students to the next grade level and term
