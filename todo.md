@@ -1,2 +1,2 @@
-- [ ] create authentication code for students
-- [ ] create authentication code for teacher
+- [X] create authentication code for students
+- [X] create authentication code for teacher
