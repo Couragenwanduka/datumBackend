@@ -6,7 +6,6 @@ import { hashPassword } from "../utils/bcrypt.js";
 import { createPassword } from "../utils/password.js";
 import { sendOnboardingMessage } from "../helper/nodemailer.js";
 
-
 /**
  * This function creates a new admin account.
  * It performs validation, checks for existing records, hashes the password,

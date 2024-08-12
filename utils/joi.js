@@ -141,3 +141,61 @@ export const teacherSchema = Joi.object({
         'any.required': 'Role is required'
     })
 }) 
+
+export const resultSchema = Joi.object({
+    firstName: Joi.string().required().messages({
+        'string.base': 'First name should be a type of string',
+        'any.required': 'First name is required'
+    }),
+    lastName: Joi.string().required().messages({
+        'string.base': 'Last name should be a type of string',
+        'any.required': 'Last name is required'
+    }),
+    subject: Joi.string().required().messages({
+        'string.base': 'Subject should be a type of string',
+        'any.required': 'Subject is required'
+    }),
+    assignment: Joi.string().required().messages({
+        'string.base': 'Assignment should be a type of string',
+        'any.required': 'Assignment is required'
+    }),
+    test: Joi.string().required().messages({
+        'string.base': 'Test should be a type of string',
+        'any.required': 'Test is required'
+    }),   
+    exam: Joi.string().required().messages({
+        'string.base': 'Exam should be a type of string',
+        'any.required': 'Exam is required'
+    }),
+    grade: Joi.number().required().messages({
+        'number.base': 'Grade should be a type of number',
+        'any.required': 'Grade is required'
+    }),
+    gradelevel: Joi.string().required().messages({
+        'string.base': 'Grade level should be a type of string',
+        'any.required': 'Grade level is required'
+    }) ,
+    term: Joi.string().required().messages({
+        'string.base': 'Term should be a type of string',
+        'any.required': 'Term is required'
+    }),
+    teacher: Joi.string().required().message({
+        'string.base': 'Teacher should be a type of string',
+        'any.required': 'Teacher is required'
+    }),
+    studentId: Joi.string().required().messages({
+        'string.base': 'Student ID should be a type of string',
+        'any.required': 'Student ID is required'
+    })
+})
+
+export const linkParentAndStudentSchema = Joi.object({
+    email: Joi.string().required().messages({
+        'string.base': 'Email should be a type of string',
+        'any.required': 'Email is required'
+    }),
+    studentId: Joi.string().required().messages({
+        'string.base': 'Student ID should be a type of string',
+        'any.required': 'Student ID is required'
+    })  
+})

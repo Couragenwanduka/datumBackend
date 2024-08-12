@@ -41,3 +41,37 @@ export const findStudentById = async(studentId) => {
     }
 }
 
+export const findAllStudents = async() => {
+    try{
+        const students = await prisma.student.findMany();
+        return students;
+    }catch(error){
+        throw new Error(`Error fetching all students: ${error.message}`);
+    }
+}
+
+export const updateAllstudent = async(studentId,gradeLevel, term) => {
+    try{
+        const students = await prisma.student.updateMany({
+            where: {
+                id: studentId,
+            },
+            data: {
+                gradeLevel,
+                term,
+            },
+        });
+        return students.count;
+    }catch(error){
+        throw new Error(`Error updating students: ${error.message}`);
+    }
+}
+export const deleteAllStudent = () => {
+    try {
+      const result = prisma.student.deleteMany();
+      return result;
+    } catch (error) {
+      throw new Error(`Error deleting all parents: ${error.message}`);
+    }
+  }
+

@@ -71,3 +71,21 @@ export const getStudentsByParentEmail = async (email) => {
     throw new Error(`Error fetching students: ${error.message}`);
   }
 };
+
+export const findAllParents = () => {
+  try {
+    const parents = prisma.parent.findMany();
+    return parents;
+  } catch (error) {
+    throw new Error(`Error fetching all parents: ${error.message}`);
+  }
+}
+
+export const deleteAllParent = () => {
+  try {
+    const result = prisma.parent.deleteMany();
+    return result;
+  } catch (error) {
+    throw new Error(`Error deleting all parents: ${error.message}`);
+  }
+}
