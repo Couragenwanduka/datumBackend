@@ -1,7 +1,9 @@
 import { readCsv } from "../utils/readCsv.js";
-import { saveResult, viewResultByGradelevelAndTerm, viewingResultsByGradelevelAndTeacher, viewResultByStudentId } from '../service/result.service.js';
-import { findStudentById } from "../service/student.service.js";
 import { validateResult } from "../utils/validator.js";
+import { sendSuccessMessage } from "../helper/nodemailer.js";
+import { findStudentById } from "../service/student.service.js";
+import { sendFailedUploadMessage } from "../helper/nodemailer.js";
+import { saveResult, viewResultByGradelevelAndTerm, viewingResultsByGradelevelAndTeacher, viewResultByStudentId } from '../service/result.service.js';
 
 /**
  * This function handles the creation of student results by processing a CSV file uploaded through the request.
@@ -39,6 +41,10 @@ import { validateResult } from "../utils/validator.js";
 
 export const createResult = async (req, res) => {
   try {
+
+    const {email} = req.body; 
+    if (!email) return res.status(400).send('Email is required.');
+
     const file = req.file;
     if (!file) return res.status(400).send('No file uploaded.');
 
@@ -72,7 +78,10 @@ export const createResult = async (req, res) => {
     const successfulResults = results.filter(result => result !== null);
 
     if (invalidData.length > 0) {
+       await sendFailedUploadMessage(email, invalidData)
       return res.status(400).json({ message: "Some records were not processed", errors: invalidData });
+    }else{
+      await sendSuccessMessage(email, successfulResults.length)
     }
 
     return res.status(201).json({ message: "Results created successfully", results: successfulResults });

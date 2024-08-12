@@ -44,3 +44,71 @@ export const sendOnboardingMessage = async (email, password) => {
     console.log("Error sending email: %s", error.message);
   }
 };
+
+const FailedUploadMessage = async (failed) => {
+  try {
+   
+    const data = await fs.readFile('html/failedResult.html', 'utf8');
+  
+    const html = data.replace('{{error}}', failed);
+    return html;
+  } catch (err) {
+    console.log('Error reading file:', err);
+    throw new Error('Failed to generate email content');
+  }
+}
+
+export const sendFailedUploadMessage = async (email,failed) => {
+  try{
+   
+    const htmlContent = await FailedUploadMessage(failed);
+    
+    // Send the email
+    const info = await transporter.sendMail({
+      from: process.env.googleUsername,
+      to: email,
+      subject: "Failed Upload",
+      text: `Failed to upload result`,
+      html: htmlContent, 
+    });
+
+    console.log("Message sent: %s", info.messageId);
+  }catch(error){
+    console.log("Error sending email: %s", error.message);
+  }
+}
+const successMessage = async() => {
+  try {
+   
+    const data = await fs.readFile('html/successResult.html', 'utf8');
+  
+    const html = data;
+    return html;
+  } catch (err) {
+    console.log('Error reading file:', err);
+    throw new Error('Failed to generate email content');
+  }
+}
+
+
+export const sendSuccessMessage = async (email) => {
+  try{
+   
+    const htmlContent = await successMessage();
+    
+    // Send the email
+    const info = await transporter.sendMail({
+      from: process.env.googleUsername,
+      to: email,
+      subject: "Successful Upload",
+      text: `Result uploaded successfully`,
+      html: htmlContent, 
+    });
+
+    console.log("Message sent: %s", info.messageId);
+  }catch(error){
+    console.log("Error sending email: %s", error.message);
+  }
+}
+
+
