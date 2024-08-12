@@ -1,0 +1,62 @@
+/* body{
+    height: 0px;
+    margin: 0px;
+}
+.logo-container{
+    background-color: #132985;
+    display: flex;
+}
+.logo{
+    max-width: 50px;
+    max-height: 50px;
+    background-image: url('logo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-left: 5rem;
+    margin-top: 1.5rem;
+}
+.logo-text{
+    color: white;
+    font-size: 2rem;
+    margin-left: 1rem;
+}
+.message-text{
+    color: #505050;
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    margin-left: 5rem;
+}
+.message{
+   overflow-wrap: break-word;
+   inline-size: none;
+   width: 90%;
+}
+.details-container{
+   margin-left: 5rem;
+}
+.details-text{
+    font-size: 1.7rem;
+}
+.email, .password{
+    color: #132985;
+    font-size: x-large;
+    margin-top: 1rem;
+}
+.link{
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+}
+.footer{
+    background-color: #132985;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    bottom: 0;
+    width: 100%;
+}
+.welcome-message{
+    color: black;
+} */

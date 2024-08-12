@@ -1,5 +1,14 @@
-import nodemailer from "nodemailer";
+import path from 'path';
 import fs from "fs/promises"; 
+import nodemailer from "nodemailer";
+import { fileURLToPath } from 'url';
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const htmlFilePath = path.join(__dirname, '../public', 'onboarding.html');
+
+
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -15,8 +24,7 @@ const transporter = nodemailer.createTransport({
 const message = async (email, password) => {
   try {
    
-    const data = await fs.readFile('html/onboarding.html', 'utf8');
-  
+    const data = await fs.readFile(htmlFilePath, 'utf8');
     const html = data.replace('{{email}}', email).replace('{{password}}', password);
     return html;
   } catch (err) {

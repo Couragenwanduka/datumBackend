@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onboarding Message</title>
+    <link rel="stylesheet" href="./onboarding.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .logo-container {
+            background-color: #132985;
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+        }
+        .logo {
+            max-width: 50px;
+            max-height: 50px;
+            margin-left: 1.5rem;
+            background-color:white;
+        }
+        .logo-text {
+            color: white;
+            font-size: 2rem;
+            margin-left: 1rem;
+        }
+        .message-text {
+            color: #505050;
+            font-size: 1.5rem;
+            margin: 2rem 5rem;
+        }
+        
+        .details-container {
+            margin-left: 5rem;
+        }
+        .details-text {
+            font-size: 1.7rem;
+        }
+        .email, .password {
+            color: #132985;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+        }
+        .link {
+            text-decoration: none;
+            color: black;
+            font-size: 1rem;
+        }
+        footer {
+            background-color: #132985;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+        }
+        .welcome-message {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+           <img src="./images/logo.png"/>
+            <p class="logo-text">Courage International School</p>
+        </div>
+    </header>
+    <section>
+        <article class="message-text">
+            <h1 class="welcome-message">Welcome to Courage International School!</h1>
+            <p class="message">We are excited to have you join us and help you build a strong foundation for the success of your ward.</p>
+            <p class="message">At Courage International School, we believe in nurturing each child's unique potential through a well-rounded and holistic educational experience. Our dedicated team of educators is committed to providing a safe, supportive, and inspiring environment where your ward can thrive academically, socially, and emotionally.</p>
+            <p class="message">From our innovative curriculum to our state-of-the-art facilities, we are here to empower students to become confident, compassionate, and capable leaders of tomorrow. Together, let's embark on this exciting journey of learning, growth, and discovery.</p>
+            <p class="message">Thank you for trusting us with your ward's education. We look forward to partnering with you to achieve excellence in every aspect of their development.</p>
+        </article>
+    </section>
+    <section>
+        <article class="details-container">
+            <h1 class="details-text">Here are your login details</h1>
+            <p class="email">Email: {{email}}</p>
+            <p class="password">Password: {{password}}</p>
+            <a href="{link}" class="link">Click here to access your account</a>
+        </article>
+    </section>
+    <footer>
+        <p class="footer">© 2024 Datum Professional Service. All rights reserved.</p>
+    </footer>
+</body>
+</html>

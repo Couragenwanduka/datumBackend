@@ -4,13 +4,13 @@ import { createStudent, getAllStudents, getStudentById } from '../controllers/st
 import { verifyAdmin } from '../middlewares/authoriation.js';
 
 // Create a new student
-router.post('/createStudent', verifyAdmin, createStudent);
+router.post('/createStudent',  createStudent);
 
 // Get all students
-router.get('/getAllStudents', verifyAdmin, getAllStudents);
+router.get('/getAllStudents',  getAllStudents);
 
 // Get a single student by id
-router.get('/getStudentById/:id', verifyAdmin, getStudentById);
+router.get('/getStudentById/:id', getStudentById);
 
 
 export default router;

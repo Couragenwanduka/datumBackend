@@ -54,7 +54,7 @@ export const Login = async (req, res) => {
 
     if (existingParentGuardian) {
 
-      const checkPassword = await comparePassword(password, existingParentGuardian.parent.password);
+      const checkPassword = await comparePassword(password, existingParentGuardian.password);
       if (!checkPassword) return res.status(400).json('Invalid password');
 
       const parentWithStudents = await getStudentsByParentEmail(email);
