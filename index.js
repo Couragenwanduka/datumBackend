@@ -3,7 +3,10 @@ import express from 'express';
 import router from './router/student.route.js';
 import adminRouter from './router/admin.route.js';
 import parentRouter from './router/parent.route.js';
-import AttendanceRouter from './router/attendance.route.js';
+import subjectRoutes from './router/subject.routes.js';
+import enrollmentRoutes from './router/enrollment.routes.js';
+import attendanceRoutes from './router/attendance.route.js';
+
 
 dotenv.config();
 
@@ -16,8 +19,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/student', router);
 app.use('/api/admin', adminRouter);
 app.use('/api/parent', parentRouter);
-app.use('/api/attendance', AttendanceRouter );
-app.use('/api/attendant', AttendanceRouter );
+app.use('/api', subjectRoutes);
+app.use('/api', enrollmentRoutes);
+app.use('/api', attendanceRoutes);
+
 
 app.get("/", function (req,res){
    res.send("Welcome to Datum Development School App... Delevoped by Courage Nduka and Ani Okechukwu")
