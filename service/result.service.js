@@ -1,18 +1,24 @@
 import prisma from '../prisma/dbconnect.js'
 
-const saveResult = async(subject, assignment, test, exam, grade,  gradelevel, classSection, term, teacher, studentId) => {
+const saveResult = async(firstName, lastName, subject, assignment, test, exam, grade, gradeLevel, classSection, term, teacher, studentId) => {
    try{
-    const result = await prisma.Result.create({
+    const result = await prisma.result.create({
         data:{
+         firstName,
+         lastName,
          subject,
          assignment,
          test,
          exam,
          grade,
-         gradelevel,
+         gradeLevel,
          classSection,
          term,
-         teacher,
+         teacher:{
+             connect:{
+                 email: teacher,
+             },
+         },
          student:{
              connect:{
                  id: studentId,

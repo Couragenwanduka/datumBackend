@@ -2,12 +2,12 @@ import path from 'path';
 import fs from "fs/promises"; 
 import nodemailer from "nodemailer";
 import { fileURLToPath } from 'url';
-
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const htmlFilePath = path.join(__dirname, '../public', 'onboarding.html');
-
+const teacherHtmlFilePath = path.join(__dirname, '../public', 'onboardingTeacher.html');
+const failedResultMessageHtmlFilePath = path.join(__dirname, '../public', 'failedResult.html');
+const successResultMessageHtmlFilePath = path.join(__dirname, '../public', 'resultSuccess.html');
 
 
 const transporter = nodemailer.createTransport({
@@ -20,8 +20,9 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+
 // Function to generate the HTML message
-const message = async (email, password) => {
+const onboardingmessage = async (email, password) => {
   try {
    
     const data = await fs.readFile(htmlFilePath, 'utf8');
@@ -33,10 +34,41 @@ const message = async (email, password) => {
   }
 };
 
+const onboardingTeacherMessage = async (email, password,firstName,subject) => {
+   try{
+    const data = await fs.readFile(teacherHtmlFilePath, 'utf8');
+    const html = data.replace('{{email}}', email).replace('{{password}}', password).replace("{{Teacher's Name}}",firstName).replace('{{Subject}}',subject);
+    return html;
+   }catch(error){
+     console.log('Error sending email:', error);
+     throw new Error('Failed to generate email content');
+   }
+}
+
+
+export const sendOnboardingTeacherMessage = async (email, password,firstName,subject) => {
+  try {
+    const htmlContent = await onboardingTeacherMessage(email, password,firstName,subject);
+    
+    const info = await transporter.sendMail({
+      from: process.env.googleUsername, 
+      to: email,
+      subject: "Welcome to Courage Secondary School!", // Updated subject to match the school name
+      text: `Welcome to Courage Secondary School! Your account has been set up. Please find the details attached.`, // Provide a meaningful fallback text
+      html: htmlContent, 
+    });
+
+    console.log("Message sent: %s", info.messageId);
+  } catch (error) {
+    console.error("Error sending email:", error.message); // Changed to console.error for better clarity
+    console.error(error.stack); // Log the stack trace for better debugging
+  }
+};
+
 export const sendOnboardingMessage = async (email, password) => {
   try {
    
-    const htmlContent = await message(email, password);
+    const htmlContent = await onboardingmessage(email, password);
     
     // Send the email
     const info = await transporter.sendMail({
@@ -56,7 +88,7 @@ export const sendOnboardingMessage = async (email, password) => {
 const FailedUploadMessage = async (failed) => {
   try {
    
-    const data = await fs.readFile('html/failedResult.html', 'utf8');
+    const data = await fs.readFile(failedResultMessageHtmlFilePath, 'utf8');
   
     const html = data.replace('{{error}}', failed);
     return html;
@@ -102,7 +134,7 @@ const successMessage = async() => {
 export const sendSuccessMessage = async (email) => {
   try{
    
-    const htmlContent = await successMessage();
+    const htmlContent = await successMessage(email);
     
     // Send the email
     const info = await transporter.sendMail({
@@ -118,5 +150,6 @@ export const sendSuccessMessage = async (email) => {
     console.log("Error sending email: %s", error.message);
   }
 }
+
 
 

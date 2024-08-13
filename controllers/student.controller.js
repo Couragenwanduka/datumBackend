@@ -9,38 +9,6 @@ import { findByEmail } from "../service/parent.service.js";
 import { findTeacherByEmail } from "../service/admin.service.js";
 
 
-/**
- * This function handles the creation of a new parent guardian and their associated student(s).
- * It performs the following key steps:
- * 
- * 1. **Extract Data from Request**:
- *    - Extracts the `parent` and `students` data from the request body.
- * 
- * 2. **Parent Guardian Validation and Creation**:
- *    - Destructures the necessary fields from the `parent` object.
- *    - Validates the parent guardian data using the `validateParentGuardian` function. If validation fails, it returns a 400 error response with the validation message.
- *    - Checks if a parent guardian with the same email already exists using the `findByEmail` function. If a match is found, it returns a 400 error response.
- *    - Checks if a teacher with the same email already exists using the `findTeacherByEmail` function. If a match is found, it returns a 400 error response.
- *    - Generates a password and hashes it using the `hashPassword` function.
- *    - Saves the parent guardian details in the database using the `saveParent` function.
- * 
- * 3. **Send Onboarding Email**:
- *    - Sends an onboarding email with the generated password to the parent guardian using the `sendOnboardingMessage` function. If the email fails to send, it logs an error message.
- * 
- * 4. **Student Creation and Association**:
- *    - Iterates over the `students` array (which may contain multiple student objects) and performs the following for each student:
- *      a. Destructures the necessary fields from each student object.
- *      b. Saves the student details in the database using the `saveStudent` function, which returns the `studentId`.
- *      c. Associates the student with the parent guardian by calling the `addStudent` function with the parent's email and the student's `studentId`.
- *    - If any error occurs during student processing, it logs the error and exits.
- * 
- * 5. **Response Handling**:
- *    - If all operations are successful, it returns a 201 status code with a success message.
- *    - If any error occurs during the parent or student creation process, it logs the error and returns a 500 status code with an error message.
- * 
- * @param {Object} req - The request object containing the parent and student data in the body.
- * @param {Object} res - The response object used to send back the appropriate HTTP response.
- */
 
 export const createStudent = async(req, res) => {
     try{
@@ -108,10 +76,11 @@ export const getAllStudents = async(req, res) => {
 
 export const getStudentById = async(req, res) => {
     try{
-        const studentId = req.params;
+        const studentId = req.params.id;
         if(!studentId) return res.status(400).json('Invalid student id');
 
-        const student = await findStudentById(studentId);
+        let id = parseInt(studentId, 10)
+        const student = await findStudentById(id);
         if(!student) return res.status(404).json('Student not found');
         res.status(200).json(student);
     }catch(error){

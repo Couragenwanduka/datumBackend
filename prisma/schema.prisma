@@ -40,6 +40,7 @@ model Student {
   photo            String
   parentEmail      String
   parent           Parent  @relation("StudentParent", fields: [parentEmail], references: [email])
+  results          Result[] @relation("StudentResult")
 }
 
 enum Role {
@@ -62,8 +63,9 @@ model Administrator {
   hireDate          String
   qualification     String
   photo             String
-  role             Role
-  createdAt      DateTime   @default(now())
+  role              Role
+  createdAt         DateTime   @default(now())
+  results           Result[]   @relation("ResultTeacher")
 }
 
 model Result {
@@ -71,16 +73,17 @@ model Result {
   firstName      String
   lastName       String
   subject        String
-  assignment     Float?
-  test           Float?
-  exam           Float?
+  assignment     String
+  test           String
+  exam           String
   grade          String
   gradeLevel     String
   classSection   String
   term           String
-  teacher        Administrator
+  teacher        Administrator @relation("ResultTeacher", fields: [teacherId], references: [id])
   student        Student       @relation("StudentResult", fields: [studentId], references: [id])
   studentId      Int
+  teacherId      Int
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
 }

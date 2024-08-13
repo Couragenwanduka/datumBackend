@@ -171,9 +171,13 @@ export const resultSchema = Joi.object({
         'number.base': 'Grade should be a type of number',
         'any.required': 'Grade is required'
     }),
-    gradelevel: Joi.string().required().messages({
+    gradeLevel: Joi.string().required().messages({
         'string.base': 'Grade level should be a type of string',
         'any.required': 'Grade level is required'
+    }),
+    classSection: Joi.string().required().messages({
+         'string.base': 'classSection should be a type of string',
+        'any.required': 'classSection  is required'
     }),
     term: Joi.string().required().messages({
         'string.base': 'Term should be a type of string',

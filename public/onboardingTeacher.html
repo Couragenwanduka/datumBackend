@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to [School Name]</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .logo-container {
+            background-color: #132985;
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+        }
+        .logo {
+            max-width: 50px;
+            max-height: 50px;
+            margin-left: 1.5rem;
+            background-color:white;
+        }
+        .logo-text {
+            color: white;
+            font-size: 2rem;
+            margin-left: 1rem;
+        }
+        .message-text {
+            color: #505050;
+            font-size: 1.5rem;
+            margin: 2rem 5rem;
+        }
+        
+        .details-container {
+            margin-left: 5rem;
+        }
+        .details-text {
+            font-size: 1.7rem;
+        }
+        .email, .password {
+            color: #132985;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+        }
+        .link {
+            text-decoration: none;
+            color: black;
+            font-size: 1rem;
+        }
+        footer {
+            background-color: #132985;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+        }
+        .welcome-message {
+            color: black;
+        }
+    </style>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+    <div class="logo-container">
+        <img src="./images/logo.png"/>
+         <p class="logo-text">Courage International School</p>
+     </div>
+
+    <h1 class="welcome-message" style="color: blue;">Welcome to Courage International School!</h1>
+
+    <p>Dear <strong>{{Teacher's Name}}</strong>,</p>
+
+    <p>Congratulations on your new role as a <strong>{{Subject}}</strong> Teacher at <strong>Courage International School</strong>! We are thrilled to have you join our dedicated team of educators who are committed to fostering a supportive and enriching learning environment for our students.</p>
+
+    <p>As you begin this exciting journey with us, here are a few key details to help you get started:</p>
+
+    <h3 style="color: #132985;">Your Onboarding Details:</h3>
+    <ul>
+        <li><strong>Start Date:</strong> 1st of September, 2024</li>
+        <li><strong>Orientation:</strong> 30th of August 2024, 12:00 pm</li>
+        <li><strong>Location:</strong> <a href="https://meet.google.com/tny-drnw-wmp">[School Address or Virtual Meeting Link]</a></li>
+    </ul>
+
+    <h3 style="color: #132985;">What to Expect:</h3>
+    <ul>
+        <li><strong>Team Introduction:</strong> You'll have the opportunity to meet your colleagues and learn about our school's culture and values.</li>
+        <li><strong>Classroom Preparation:</strong> We'll provide you with everything you need to set up your classroom and get ready for the school year.</li>
+        <li><strong>Resources and Support:</strong> Our administration team is here to support you with any resources or guidance you may need.</li>
+    </ul>
+
+    <h3 style="color: #132985">Next Steps:</h3>
+    <p>Please find attached your onboarding schedule, school policies, and other essential documents. If you have any questions before your start date, feel free to reach out to <strong>Echtanna Nwankwo</strong> at <strong>08104454517</strong>.</p>
+
+    <p>We are confident that your skills and passion for education will make a significant impact on our students' lives. Welcome to the <strong>CIS</strong> family!</p>
+
+    <p>We look forward to seeing you soon!</p>
+    <section>
+        <article class="details-container-">
+            <h1 class="details-text">Here are your login details</h1>
+            <p class="email">Email: {{email}}</p>
+            <p class="password">Password: {{password}}</p>
+            <a href="{link}" class="link">Click here to access your account</a>
+        </article>
+    </section>
+    <div style="margin-bottom: 130px; ">
+
+        <p>Warm regards,</p>
+        <p><strong>Chimere Ojinta</strong><br>
+        Principal <br>
+        Courage International School<br>
+        c.ojinta@genesystechhub.com</p>
+    </div>
+
+    <footer>
+        <p class="footer">© 2024 Datum Professional Service. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
