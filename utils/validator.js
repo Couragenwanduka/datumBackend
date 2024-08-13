@@ -65,9 +65,9 @@ export const validateTeacher = async(firstName, lastName, gender, dateOfBirth, e
    }
 }
 
-export const validateResult = async( firstName, lastName, subject, assignment, test, exam, grade, gradelevel, classSection, term, teacher, studentId ) => {
+export const validateResult = async( firstName, lastName, subject, assignment, test, exam, grade, gradeLevel, classSection, term, teacher, studentId ) => {
     try{
-        const resultData = {firstName, lastName, subject, assignment, test, exam, grade, gradelevel, classSection, term, teacher, studentId};
+        const resultData = {firstName, lastName, subject, assignment, test, exam, grade, gradeLevel, classSection, term, teacher, studentId};
 
         const validatedResult = await resultSchema.validateAsync(resultData);
 

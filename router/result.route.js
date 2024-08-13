@@ -1,9 +1,10 @@
 import express from 'express';
 const resultRouter = express.Router();
+import { upload } from '../middlewares/multer.js';
 import { createResult, getResultByGradeLevelAndTerm, getResultByStudentId, getResultByGradelevelAndTeacher} from '../controllers/result.controller.js';
 
 // Create a new result
-resultRouter.post('/createResult', createResult);
+resultRouter.post('/createResult',upload.single('file'), createResult);
 
 // Get results by grade level and term
 resultRouter.get('/getResultByGradeLevelAndTerm/:gradeLevel/:term', getResultByGradeLevelAndTerm);
