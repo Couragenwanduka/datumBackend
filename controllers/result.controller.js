@@ -1,6 +1,6 @@
 import { readCsv } from "../utils/readCsv.js";
 import fs from 'fs'
-import { validateResult } from "../utils/validator.js";
+import { validateResult } from "../schema/result.joi.js";
 import { sendSuccessMessage } from "../helper/nodemailer.js";
 import { findStudentById } from "../service/student.service.js";
 import { sendFailedUploadMessage } from "../helper/nodemailer.js";

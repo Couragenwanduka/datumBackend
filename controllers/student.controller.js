@@ -1,66 +1,46 @@
 import { saveStudent,findAllStudents, findStudentById,  } from "../service/student.service.js";
-import { addStudent } from "../service/parent.service.js";
+import { assignStudentsToParent } from "../service/parent.service.js";
 import { createPassword } from "../utils/password.js";
 import { sendOnboardingMessage } from "../helper/nodemailer.js";
 import { hashPassword } from "../utils/bcrypt.js";
-import { saveParent } from "../service/parent.service.js";
-import { validateParentGuardian } from "../utils/validator.js";
-import { findByEmail } from "../service/parent.service.js";
+import { createParent } from "../service/parent.service.js";
+import { getParentByEmail } from "../service/parent.service.js";
 import { findTeacherByEmail } from "../service/admin.service.js";
+import { findStudentsByParentEmail } from "../service/student.service.js";
+import BadRequest from "../error/error.js";
 
 
-
-export const createStudent = async(req, res) => {
+export const createStudent = async(req, res, next) => {
     try{
          const { parent, students } = req.body;
 
-          // Create the parent guardian
-         const {firstName, lastName, relationship, contactNumber, email} = parent;
-         const { error } = validateParentGuardian(firstName, lastName, relationship, contactNumber, email);
-         if (error) return res.status(400).send(error.details[0].message);
- 
+         const { email } = parent;
+
           // Check if a parent guardian with the same email already exists
-         const existingParentGuardian = await findByEmail(email);
-         if (existingParentGuardian) return res.status(400).send("A parent guardian with the same email already exists.");
+         const existingParentGuardian = await getParentByEmail(email);
+         if (existingParentGuardian)  throw new BadRequest("A parent guardian with the same email already exists.");
 
          const checkForEmail = await findTeacherByEmail(email)
-         if (checkForEmail) return res.status(400).send("A teacher with the same email already exists.");
+         if (checkForEmail) throw new BadRequest("A teacher with the same email already exists.");
 
          const password = createPassword()
          const hashedPassword = await hashPassword(password);
  
           // Save the parent guardian
-         await saveParent(firstName, lastName, relationship, contactNumber, email, hashedPassword,new Date('2005-03-14'));
+         await createParent(parent,hashedPassword);
 
           // send onborading mail
          const sendMail = sendOnboardingMessage(email, password)
-         if(!sendMail) return 'mail did not send';
+         if(!sendMail) console.log('mail did not send');
 
-         const studentsArray = [students]
-         // Add the student(s) to the parent guardian
-        
-         for (const studentGroup of studentsArray) {
-            for (const student of Object.values(studentGroup)) {
-                try {
-                    const { firstName, lastName, dateOfBirth, gender, nationality, currentAddress, permanentAddress, 
-                        enrollmentDate, gradeLevel, classSection, photo } = student;
-                    // Call saveStudent and log the studentId
-                    const studentId = await saveStudent(firstName, lastName, dateOfBirth, gender, nationality, currentAddress, permanentAddress, 
-                    enrollmentDate, gradeLevel, classSection, photo, email);
-                   
-                    // Call addStudent to associate the student
-                    await addStudent(email, studentId);
-                } catch (error) {
-                    console.error('Error processing student:', error);
-                    return
-                }
-            }
-        }
-        
+         await saveStudent(students, email);
+
+         const studentId = findStudentsByParentEmail(email)
+         // Add the student to the parent guardian
+         await assignStudentsToParent(studentId, email);
          res.status(201).json('Parent and student created successfully');
     }catch(error){
-        console.log(error)
-        res.status(500).json(`Error creating parent and student: ${error.message}`);
+         next(error);
     }
 }
 

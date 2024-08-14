@@ -1,24 +1,24 @@
 import prisma from "../prisma/dbconnect.js";
 
-export const saveParent = async (firstName, lastName, relationship, contactNumber, email, password) => {
+export const createParent = async (parent,hashedPassword) => {
   try {
-    const parent = await prisma.parent.create({
+    const saveedparent = await prisma.parent.create({
       data: {
-        firstName,
-        lastName,
-        relationship,
-        contactNumber,
-        email,
-        password,
+        firstName:parent.firstName,
+        lastName:parent.lastName,
+        relationship:parent.relationship,
+        contactNumber:parent.contactNumber,
+        email:parent.email,
+        password:hashedPassword,
       },
     });
-    return parent;
+    return saveedparent;
   } catch (error) {
-    throw new Error(`Error creating student: ${error.message}`);
+    throw new Error(`Error creating parent: ${error.message}`);
   }
 };
 
-export const findByEmail = async (email) => {
+export const getParentByEmail = async (email) => {
   try {
     const parent = await prisma.parent.findUnique({
       where: {
@@ -31,7 +31,7 @@ export const findByEmail = async (email) => {
   }
 };
 
-export const addStudent = async (email, studentId) => {
+export const assignStudentsToParent = async (email, studentIds) => {
   try {
     const parent = await prisma.parent.update({
       where: {
@@ -39,19 +39,17 @@ export const addStudent = async (email, studentId) => {
       },
       data: {
         students: {
-          connect: {
-            id: studentId,
-          },
+          connect: studentIds.map(id => ({ id })),
         },
       },
     });
     return parent;
   } catch (error) {
-    throw new Error(`Error adding student: ${error.message}`);
+    throw new Error(`Error adding students: ${error.message}`);
   }
 };
 
-export const getStudentsByParentEmail = async (email) => {
+export const getStudentsForParent = async (email) => {
   try {
     const parentWithStudents = await prisma.parent.findUnique({
       where: {
@@ -72,20 +70,20 @@ export const getStudentsByParentEmail = async (email) => {
   }
 };
 
-export const findAllParents = () => {
+export const findAllParents = async () => {
   try {
-    const parents = prisma.parent.findMany();
+    const parents = await prisma.parent.findMany();
     return parents;
   } catch (error) {
     throw new Error(`Error fetching all parents: ${error.message}`);
   }
-}
+};
 
-export const deleteAllParent = () => {
+export const deleteAllParent = async () => {
   try {
-    const result = prisma.parent.deleteMany();
+    const result = await prisma.parent.deleteMany();
     return result;
   } catch (error) {
     throw new Error(`Error deleting all parents: ${error.message}`);
   }
-}
+};
