@@ -4,6 +4,7 @@ import { createStudent, getAllStudents, getStudentById } from '../controllers/st
 import { verifyAdmin } from '../middlewares/authoriation.js';
 import { studentRegistrationSchema } from '../schema/user.joi.js';
 import {validator} from '../middlewares/validator.middleware.js';
+import { idSchema } from '../schema/user.joi.js';
 
 // Create a new student
 router.post('/createStudent', [validator(studentRegistrationSchema)], createStudent);
@@ -12,7 +13,7 @@ router.post('/createStudent', [validator(studentRegistrationSchema)], createStud
 router.get('/getAllStudents',  getAllStudents);
 
 // Get a single student by id
-router.get('/getStudentById/:id', getStudentById);
+router.get('/getStudentById/:id',[validator(idSchema)], getStudentById);
 
 
 export default router;

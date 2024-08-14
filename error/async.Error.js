@@ -17,6 +17,20 @@ const errorHandling = (err, req, res, next) => {
       success: false,
     });
   }
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    return res.status(400).json({ message: err.message, name: err.name, stack: err.stack, });
+  }
+  if (err instanceof TypeError) {
+    // Check if the error object has a status of 400 and a 'body' property
+    if (err.status === 400 && 'body' in err) {
+      return res.status(400).json({
+        message: err.message,
+        name: err.name,
+        stack: err.stack, // Be cautious with exposing stack traces in production
+      });
+    }
+  }
+  
 
   // Log the error for internal tracking (optional)
   console.error('Unhandled error:', err);

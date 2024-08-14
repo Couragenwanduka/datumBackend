@@ -33,21 +33,28 @@ export const getParentByEmail = async (email) => {
 
 export const assignStudentsToParent = async (email, studentIds) => {
   try {
-    const parent = await prisma.parent.update({
-      where: {
-        email,
-      },
+    // Ensure studentIds is an array
+    if (!Array.isArray(studentIds)) {
+      studentIds = [studentIds];
+    }
+
+    // Proceed with the mapping logic
+    const updatedParent = await prisma.parent.update({
+      where: { email: email },
       data: {
         students: {
-          connect: studentIds.map(id => ({ id })),
+          connect: numericStudentIds.map(id => ({ id })),
         },
       },
     });
-    return parent;
+    console.log(updatedParent);
+    return updatedParent;
   } catch (error) {
-    throw new Error(`Error adding students: ${error.message}`);
+    console.error('Error adding students:', error);
+    throw new Error('Error adding students');
   }
 };
+
 
 export const getStudentsForParent = async (email) => {
   try {

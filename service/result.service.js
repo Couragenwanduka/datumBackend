@@ -90,4 +90,13 @@ const viewResultByStudentId = async(studentId) => {
     }
 }
 
-export { saveResult, viewResultByGradelevelAndTerm, viewingResultsByGradelevelAndTeacher, viewResultByStudentId }
+const deleteAllResults = async() => {
+    try{
+        await prisma.result.deleteMany()
+        console.log('All results deleted successfully')
+    }catch(error){
+        console.log('Error deleting all results:', error.message)
+    }
+}
+
+export { saveResult, viewResultByGradelevelAndTerm, viewingResultsByGradelevelAndTeacher, viewResultByStudentId, deleteAllResults }

@@ -1,45 +1,45 @@
 import prisma from "../prisma/dbconnect.js";
 
-export const  saveStudent = async(studentsArray, email) => {
-    const transaction = await prisma.$transaction();
-    try {
-        // Prepare the data for batch insert
-        const studentsData = studentsArray.flatMap(studentGroup =>
-            Object.values(studentGroup).map(student => ({
-                firstName: student.firstName,
-                lastName: student.lastName,
-                dateOfBirth: student.dateOfBirth,
-                gender: student.gender,
-                nationality: student.nationality,
-                currentAddress: student.currentAddress,
-                permanentAddress: student.permanentAddress,
-                enrollmentDate: student.enrollmentDate,
-                gradeLevel: student.gradeLevel,
-                classSection: student.classSection,
-                photo: student.photo,
-                parentEmail: email, 
-            }))
-        );
+export const saveStudent = async (studentsArray, email) => {
+  try {
 
-        // Batch create students
-        const createdStudents = await prisma.student.createMany({
-            data: studentsData,
-            skipDuplicates: true, // Optionally skip duplicates if necessary
-            transaction
-        });
+    const studentsData = studentsArray.map(student => ({
+      firstName: student.firstName,
+      lastName: student.lastName,
+      dateOfBirth: new Date(student.dateOfBirth), // Ensure date is in the correct format
+      gender: student.gender,
+      nationality: student.nationality,
+      currentAddress: student.currentAddress,
+      permanentAddress: student.permanentAddress,
+      enrollmentDate: new Date(student.enrollmentDate), // Ensure date is in the correct format
+      gradeLevel: student.gradeLevel,
+      classSection: student.classSection,
+      photo: student.photo,
+      parentEmail: email,
+    }));
 
-        // Commit the transaction
-        await transaction.commit();
+    // Use Prisma transaction to handle batch operations
+    const createdStudents = await prisma.$transaction([
+      prisma.student.createMany({
+        data: studentsData,
+        skipDuplicates: true, // Skip duplicates if necessary
+      })
+    ]);
 
-        return createdStudents.id;
+    // Since createMany doesn't return IDs, you'd need to query for them if needed
+    const insertedStudentIds = await prisma.student.findMany({
+      where: { parentEmail: email },
+      select: { id: true }
+    });
 
-    } catch (error) {
-        console.error('Error processing students:', error);
+    return insertedStudentIds.map(student => student.id);
 
-        // Rollback the transaction in case of an error
-        await transaction.rollback();
-    }
-}
+  } catch (error) {
+    console.error('Error processing students:', error);
+    throw error; // Rethrow error to be caught by the calling function
+  }
+};
+
 
 export const findStudentsByParentEmail = async(email) => {
     try{

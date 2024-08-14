@@ -1,26 +1,26 @@
 import prisma from "../prisma/dbconnect.js";
 
-const saveAdminstrator = async(firstName, lastName, gender, dateOfBirth, email, password, contactNumber, currentAddress, permanentAddress, subject, hireDate, qualification, photo, role) =>{
+const saveAdminstrator = async(admin) =>{
     try{
-        const admin = await prisma.Administrator.create({
+        const saveData = await prisma.Administrator.create({
             data:{
-                firstName,
-                lastName,
-                gender,
-                dateOfBirth: new Date(dateOfBirth),
-                email,
-                password,
-                contactNumber,
-                currentAddress,
-                permanentAddress,
-                subject,
-                hireDate,
-                qualification,
-                photo,
-                role,
+                firstName: admin.firstName,
+                lastName: admin.lastName,
+                gender: admin.gender,
+                dateOfBirth: new Date(admin.dateOfBirth),
+                email:admin.email,
+                password: admin.hashedPassword,
+                contactNumber: admin.contactNumber,
+                currentAddress: admin.currentAddress,
+                permanentAddress: admin.permanentAddress,
+                subject: admin.subject,
+                hireDate:admin.hireDate,
+                qualification:admin.qualification,
+                photo:admin.photo,
+                role:admin.role,
             }
         });
-        return admin.id;
+        return saveData;
     }catch(error){
         throw new Error(`Error creating admin: ${error.message}`);
     }

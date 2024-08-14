@@ -21,7 +21,7 @@ cloudinary.config({
     api_key: process.env.api_key,
     api_secret: process.env.api_secret,
   });
-
+ 
 const uploadToCloudinary = async (imageurl) => {
   try {
     const result = await cloudinary.uploader.upload(imageurl);
