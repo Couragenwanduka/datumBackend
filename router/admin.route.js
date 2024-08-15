@@ -22,5 +22,4 @@ import { createAdmin } from '../controllers/admin.controller.js';
 // Create a new admin
 adminRouter.post('/createAdmin', createAdmin);
 
-export default adminRouter;
-attendance-feature
+
