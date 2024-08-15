@@ -25,7 +25,6 @@ export const Login = async (req, res, next) => {
         token,
       });
     }
-
     if (existingTeacher) {
       const checkPassword = await comparePassword(password, existingTeacher.teacher.password);
       if (!checkPassword) throw new BadRequest('Invalid password');
@@ -73,5 +72,6 @@ export const getAllParents = async (req, res, next) => {
   } catch (error) {
     console.log('Error getting all parents:', error.message);
     next(error);
+ 
   }
 };

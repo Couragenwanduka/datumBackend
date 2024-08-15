@@ -21,7 +21,6 @@ export const createStudent = async(req, res, next) => {
 
          const checkForEmail = await findTeacherByEmail(email)
          if (checkForEmail) throw new BadRequest("A teacher with the same email already exists.");
-
          const password = createPassword()
          const hashedPassword = await hashPassword(password);
  
@@ -77,6 +76,4 @@ export const getAllStudentCvsData = async(req, res, next) => {
     next(error);
    }
 }
-
-
 

@@ -68,6 +68,47 @@ model Student {
   results          Result[] @relation("StudentResult")
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
+  enrollments      Enrollment[]
+  attendance       Attendance[]
+  gradeLevel       String
+  classSection     String
+  photo            String
+  parentEmail      String
+  parent           Parent  @relation("StudentParent", fields: [parentEmail], references: [email])
+}
+
+model Subject {
+  id              Int       @id @default(autoincrement())
+  name            String
+  code             String    @unique
+  enrollments     Enrollment[]
+  attendance      Attendance[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Enrollment {
+  id              Int  @id @default(autoincrement())
+  student         Student  @relation(fields: [studentId], references: [id])
+  studentId       Int
+  subject         Subject  @relation(fields: [subjectId], references: [id])
+  subjectId       Int
+  createdAt       DateTime @default(now())
+
+  @@unique([studentId, subjectId])
+}
+
+model Attendance {
+  id            Int      @id @default(autoincrement())
+  date          DateTime
+  status        String  // Example values: "Present", "Absent", "Late"
+  student    Student  @relation(fields: [studentId], references: [id])
+  studentId     Int
+  subject    Subject  @relation(fields: [subjectId], references: [id])
+  subjectId     Int
+  createdAt     DateTime @default(now())
+
+  @@unique([studentId, subjectId, date])
 }
 
 enum Role {

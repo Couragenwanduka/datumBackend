@@ -21,6 +21,7 @@ router.get('/getStudentById/:id',[validator(idSchema)], getStudentById);
 router.get('/getAllStudentCvsData', getAllStudentCvsData);
 
 
+
 export default router;
 
 

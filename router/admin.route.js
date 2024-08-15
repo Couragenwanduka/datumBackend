@@ -1,5 +1,6 @@
 import express from 'express';
 const adminRouter = express.Router();
+
 import { upload } from '../middlewares/multer.js';
 import { adminSchema } from '../schema/administrator.joi.js';
 import { verifyAdmin } from '../middlewares/authoriation.js';
@@ -15,3 +16,11 @@ adminRouter.delete('/deleteEverything', deleteEverything);
 
 export default adminRouter;
 
+import { createAdmin } from '../controllers/admin.controller.js';
+
+
+// Create a new admin
+adminRouter.post('/createAdmin', createAdmin);
+
+export default adminRouter;
+attendance-feature
