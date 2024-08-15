@@ -7,4 +7,3 @@ import { createAdmin } from '../controllers/admin.controller.js';
 adminRouter.post('/createAdmin', createAdmin);
 
 export default adminRouter;
-
