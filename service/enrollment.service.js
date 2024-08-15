@@ -6,11 +6,11 @@ export const enrollStudent = async (studentId, subjectId) => {
         const enrollment = await prisma.enrollment.create({
             data: {
                 studentId,
-                subjectId,
+                subjectId, 
             },
         });
         return enrollment;
-    } catch (error) {
+        } catch (error) {
         console.error(`Error enrolling student: ${error.message}`);
         throw error;
     }
@@ -25,7 +25,7 @@ export const getAllEnrollments = async () => {
                 subject: true,
             },
         });
-        return enrollments;
+        return enrollments; 
     } catch (error) {
         console.error(`Error fetching enrollments: ${error.message}`);
         throw error;

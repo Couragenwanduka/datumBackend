@@ -3,7 +3,7 @@ import { createSubject, getAllSubjects, getSubjectById, updateSubject, deleteSub
 
 const router = express.Router();
 
-router.post('/subjects', async (req, res) => {
+router.post('/subjects', async (req, res) => { 
     try {
         const { name, code } = req.body;
         const subject = await createSubject(name, code);

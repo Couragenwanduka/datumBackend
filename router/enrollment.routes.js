@@ -13,7 +13,7 @@ router.post('/enrollments', async (req, res) => {
     try {
         const { studentId, subjectId } = req.body;
         const enrollment = await enrollStudent(studentId, subjectId);
-        res.status(201).json(enrollment);
+        res.status(201).json(enrollment); { "Enrollment deleted successfully" };
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
