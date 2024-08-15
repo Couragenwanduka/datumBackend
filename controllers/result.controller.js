@@ -43,7 +43,7 @@ export const createResult = async (req, res) => {
           return await saveResult(firstName, lastName, subject, assignment, test, exam, grade, gradeLevel, classSection, term, teacher, id);
       })
     );
-
+    fs.unlink(file.path)
     // Filter out null results (errors)
     const successfulResults = results.filter(result => result !== null);
 
@@ -52,9 +52,6 @@ export const createResult = async (req, res) => {
        console.log(invalidData)
       return res.status(400).json({ message: "Some records were not processed", errors: invalidData });
     }
-    // else{
-    //   // await sendSuccessMessage(email, successfulResults.length)
-    // }
     fs.unlink(file.path)
 
     return res.status(201).json({ message: "Results created successfully", results: successfulResults });

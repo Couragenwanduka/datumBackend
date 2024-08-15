@@ -1,9 +1,12 @@
 import prisma from "../prisma/dbconnect.js";
+import { generateId } from "../utils/id.js";
 
 export const createParent = async (parent,hashedPassword) => {
   try {
+    const id = generateId()
     const saveedparent = await prisma.parent.create({
       data: {
+        id,
         firstName:parent.firstName,
         lastName:parent.lastName,
         relationship:parent.relationship,

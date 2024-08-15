@@ -26,7 +26,7 @@ const errorHandling = (err, req, res, next) => {
       return res.status(400).json({
         message: err.message,
         name: err.name,
-        stack: err.stack, // Be cautious with exposing stack traces in production
+        stack: err.stack, 
       });
     }
   }

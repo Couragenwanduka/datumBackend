@@ -1,17 +1,20 @@
 import prisma from "../prisma/dbconnect.js";
+import { parse } from 'json2csv';
+import { generateId } from "../utils/id.js";
 
 export const saveStudent = async (studentsArray, email) => {
   try {
-
     const studentsData = studentsArray.map(student => ({
+      id:generateId(),
       firstName: student.firstName,
       lastName: student.lastName,
-      dateOfBirth: new Date(student.dateOfBirth), // Ensure date is in the correct format
+      dateOfBirth:   new Date(student.dateOfBirth), 
+      bloodGroup: student.bloodGroup,
       gender: student.gender,
       nationality: student.nationality,
       currentAddress: student.currentAddress,
       permanentAddress: student.permanentAddress,
-      enrollmentDate: new Date(student.enrollmentDate), // Ensure date is in the correct format
+      enrollmentDate: new  Date(student.enrollmentDate), 
       gradeLevel: student.gradeLevel,
       classSection: student.classSection,
       photo: student.photo,
@@ -94,12 +97,28 @@ export const updateAllstudent = async(studentId,gradeLevel, term) => {
         throw new Error(`Error updating students: ${error.message}`);
     }
 }
-export const deleteAllStudent = () => {
+export const deleteAllStudent = async() => {
     try {
-      const result = prisma.student.deleteMany();
+      const result = await prisma.student.deleteMany();
       return result;
     } catch (error) {
       throw new Error(`Error deleting all parents: ${error.message}`);
     }
   }
+
+export const findAllStudentCvsData = async() => {
+  try {
+    const students = await prisma.student.findMany({
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+      },
+    });
+    const cvs = parse(students)
+    return cvs;
+  } catch (error) {
+    throw new Error(`Error fetching student CVs data: ${error.message}`);
+  }
+}
 

@@ -18,7 +18,7 @@ export const createAdmin = async (req, res, next) => {
     const { firstName, lastName, gender, dateOfBirth, email, contactNumber, currentAddress, permanentAddress, subject, hireDate, qualification, role} = req.body;
    
     const file = req.file;
-    if(!file) return res.status(404).json({ status: 'No file uploaded' });
+    if(!file) throw new BadRequest({ status: 'No file uploaded' });
    
     const photo = await uploadToCloudinary(file.path);
     if(!photo) {

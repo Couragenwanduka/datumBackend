@@ -6,7 +6,8 @@ import { createParent } from "../service/parent.service.js";
 import { getParentByEmail } from "../service/parent.service.js";
 import { findTeacherByEmail } from "../service/admin.service.js";
 import BadRequest from "../error/error.js";
-
+import { Readable } from 'stream';
+import { findAllStudentCvsData } from "../service/student.service.js";
 
 export const createStudent = async(req, res, next) => {
     try{
@@ -62,6 +63,19 @@ export const getStudentById = async(req, res, next) => {
         console.log(error)
        next(error);
     }
+}
+
+export const getAllStudentCvsData = async(req, res, next) => {
+   try{
+       const students = await findAllStudentCvsData();
+       const stream = Readable.from(students);
+       res.setHeader('Content-disposition', 'attachment; filename=students.csv');
+       res.setHeader('Content-type', 'text/csv');
+       stream.pipe(res);
+   }catch(error){
+    console.log(error)
+    next(error);
+   }
 }
 
 

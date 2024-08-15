@@ -1,9 +1,11 @@
 import prisma from "../prisma/dbconnect.js";
+import { generateId } from "../utils/id.js";
 
 const saveAdminstrator = async(admin) =>{
     try{
         const saveData = await prisma.Administrator.create({
             data:{
+                id: generateId(),
                 firstName: admin.firstName,
                 lastName: admin.lastName,
                 gender: admin.gender,

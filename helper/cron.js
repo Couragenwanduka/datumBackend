@@ -34,13 +34,13 @@ const promoteStudents = async () => {
                 let { gradeLevel, term } = student;
 
                 // Promotion logic
-                if (term === 'Third-Term') {
+                if (term === 'ThirdTerm') {
                     gradeLevel += 1;
-                    term = 'First-Term';
-                } else if (term === 'First-Term') {
-                    term = 'Second-Term';
-                } else if (term === 'Second-Term') {
-                    term = 'Third-Term';
+                    term = 'FirstTerm';
+                } else if (term === 'FirstTerm') {
+                    term = 'SecondTerm';
+                } else if (term === 'SecondTerm') {
+                    term = 'ThirdTerm';
                 }
 
                 // Update student with new grade level and term

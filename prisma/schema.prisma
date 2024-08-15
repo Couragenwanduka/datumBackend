@@ -14,7 +14,7 @@ datasource db {
 }
 
 model Parent {
-  id            Int        @id @default(autoincrement())
+  id            Int        @id
   firstName     String
   lastName      String
   relationship  String
@@ -23,24 +23,51 @@ model Parent {
   password      String
   createdAt     DateTime   @default(now())
   students      Student[]  @relation("StudentParent")
+  updatedAt     DateTime      @updatedAt
+}
+
+enum Term {
+  FirstTerm
+  SecondTerm
+  ThirdTerm
+}
+
+enum ClassSection {
+  Purity
+  Peace
+  Love
+  Wisdom
+  Joy
+}
+enum GradeLevel {
+  Jss1
+  Jss2
+  Jss3
+  Sss1
+  Sss2
+  Sss3
 }
 
 model Student {
-  id               Int      @id @default(autoincrement())
+  id               Int     @id
   firstName        String
   lastName         String
   dateOfBirth      DateTime
+  bloodGroup       String
   gender           String
   nationality      String
   currentAddress   String
   permanentAddress String
   enrollmentDate   DateTime
-  gradeLevel       String
-  classSection     String
+  gradeLevel       GradeLevel
+  classSection     ClassSection
+  term             Term
   photo            String
   parentEmail      String
   parent           Parent  @relation("StudentParent", fields: [parentEmail], references: [email])
   results          Result[] @relation("StudentResult")
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
 }
 
 enum Role {
@@ -49,7 +76,7 @@ enum Role {
 }
 
 model Administrator {
-  id                Int        @id @default(autoincrement())
+  id                Int       @id
   firstName         String
   lastName          String
   gender            String
@@ -64,8 +91,9 @@ model Administrator {
   qualification     String
   photo             String
   role              Role
-  createdAt         DateTime   @default(now())
   results           Result[]   @relation("ResultTeacher")
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
 }
 
 model Result {
@@ -77,9 +105,9 @@ model Result {
   test           String
   exam           String
   grade          String
-  gradeLevel     String
-  classSection   String
-  term           String
+  gradeLevel     GradeLevel
+  classSection   ClassSection
+  term           Term
   teacher        Administrator @relation("ResultTeacher", fields: [teacherId], references: [id])
   student        Student       @relation("StudentResult", fields: [studentId], references: [id])
   studentId      Int
