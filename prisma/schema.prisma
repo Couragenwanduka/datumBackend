@@ -1,0 +1,133 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Parent {
+  id            Int        @id
+  firstName     String
+  lastName      String
+  relationship  String
+  contactNumber String
+  email         String     @unique
+  password      String
+  createdAt     DateTime   @default(now())
+  students      Student[]  @relation("StudentParent")
+  updatedAt     DateTime      @updatedAt
+}
+
+enum Term {
+  FirstTerm
+  SecondTerm
+  ThirdTerm
+}
+
+enum ClassSection {
+  Purity
+  Peace
+  Love
+  Wisdom
+  Joy
+}
+enum GradeLevel {
+  Jss1
+  Jss2
+  Jss3
+  Sss1
+  Sss2
+  Sss3
+}
+
+model Student {
+  id               Int     @id
+  firstName        String
+  lastName         String
+  dateOfBirth      DateTime
+  bloodGroup       String
+  gender           String
+  nationality      String
+  currentAddress   String
+  permanentAddress String
+  enrollmentDate   DateTime
+  gradeLevel       GradeLevel
+  classSection     ClassSection
+  term             Term
+  photo            String
+  attendance       Attendance[]
+  parentEmail      String
+  parent           Parent  @relation("StudentParent", fields: [parentEmail], references: [email])
+  results          Result[] @relation("StudentResult")
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+}
+
+enum Role {
+  Admin
+  Teacher
+}
+
+model Administrator {
+  id                Int       @id
+  firstName         String
+  lastName          String
+  gender            String
+  dateOfBirth       DateTime
+  email             String     @unique
+  password          String
+  contactNumber     String     @unique
+  currentAddress    String
+  permanentAddress  String
+  subject           String
+  hireDate          String
+  qualification     String
+  photo             String
+  role              Role
+  results           Result[]   @relation("ResultTeacher")
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+}
+
+model Result {
+  id             Int          @id @default(autoincrement())
+  firstName      String
+  lastName       String
+  subject        String
+  assignment     String
+  test           String
+  exam           String
+  grade          String
+  gradeLevel     GradeLevel
+  classSection   ClassSection
+  term           Term
+  teacher        Administrator @relation("ResultTeacher", fields: [teacherId], references: [id])
+  student        Student       @relation("StudentResult", fields: [studentId], references: [id])
+  studentId      Int
+  teacherId      Int
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+enum Status{
+  Present
+  Absent
+  Late
+}
+
+model Attendance {
+  id            Int      @id @default(autoincrement())
+  date          DateTime
+  status        Status  
+  student       Student  @relation(fields: [studentId], references: [id])
+  studentId     Int
+  createdAt     DateTime @default(now())
+}
