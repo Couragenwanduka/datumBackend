@@ -14,6 +14,10 @@ const students = Joi.array().items(
             'date.base': 'Date of birth should be a valid date',
             'any.required': 'Date of birth is required'
         }),
+        bloodGroup: Joi.string().required().messages({
+            'string.base': 'Blood group should be a type of string',
+            'any.required': 'Blood group is required'
+        }),
         gender: Joi.string().valid('Male', 'Female', 'Other').required().messages({
             'string.base': 'Gender should be a type of string',
             'any.required': 'Gender is required',
@@ -39,13 +43,19 @@ const students = Joi.array().items(
             'date.base': 'Enrollment date should be a valid date',
             'any.required': 'Enrollment date is required'
         }),
-        gradeLevel: Joi.string().required().messages({
+        gradeLevel: Joi.string().required().valid('Jss1' ,'Jss2','Jss3', 'Sss1', 'Sss2','Sss3').messages({
             'string.base': 'Grade level should be a type of string',
+            'any.only': 'Grade level must be Jss1, Jss2, Jss3, Sss1, Sss2, or Sss3',
             'any.required': 'Grade level is required'
         }),
-        classSection: Joi.string().required().messages({
+        classSection: Joi.string().required().valid('Purity', 'Peace','Love','Wisdom','Joy').messages({
             'string.base': 'Class section should be a type of string',
+            'any.only': 'Class section must be Purity, Peace, Love, Wisdom, or Joy',
             'any.required': 'Class section is required'
+        }),
+        term: Joi.string().required().valid('FirstTerm','SecondTerm','ThirdTerm').messages({
+            'string.base': 'Term should be a type of string',
+            'any.required': 'Term is required'
         })
     })
 )

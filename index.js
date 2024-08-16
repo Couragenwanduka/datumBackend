@@ -3,8 +3,6 @@ import express from 'express';
 import router from './router/student.route.js';
 import adminRouter from './router/admin.route.js';
 import parentRouter from './router/parent.route.js';
-import subjectRoutes from './router/subject.routes.js';
-import enrollmentRoutes from './router/enrollment.routes.js';
 import attendanceRoutes from './router/attendance.route.js';
 import resultRouter from './router/result.route.js';
 import promoteStudents from './helper/cron.js';
@@ -34,8 +32,6 @@ app.use('/api/student', router);
 app.use('/api/admin', adminRouter);
 app.use('/api/parent', parentRouter);
 app.use('/api/result', resultRouter);
-app.use('/api', subjectRoutes);
-app.use('/api', enrollmentRoutes);
 app.use('/api', attendanceRoutes);
 
 // Error handling middleware (must be last)

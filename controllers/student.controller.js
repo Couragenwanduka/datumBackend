@@ -21,17 +21,21 @@ export const createStudent = async(req, res, next) => {
 
          const checkForEmail = await findTeacherByEmail(email)
          if (checkForEmail) throw new BadRequest("A teacher with the same email already exists.");
+
+         // Create a password for the parent guardian
          const password = createPassword()
          const hashedPassword = await hashPassword(password);
  
           // Save the parent guardian
-         await createParent(parent,hashedPassword);
+         const savedParent = await createParent(parent,hashedPassword);
+         if(!savedParent) throw new BadRequest('Parent guardian not created');
 
           // send onborading mail
          const sendMail = sendOnboardingMessage(email, password)
          if(!sendMail) console.log('mail did not send');
 
-         await saveStudent(students, email);
+         const savedStudent = await saveStudent(students, email);
+         if(!savedStudent) throw new BadRequest('No students created');
          
          res.status(201).json('Parent and student created successfully');
     }catch(error){

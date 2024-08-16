@@ -1,13 +1,12 @@
 import prisma from "../prisma/dbconnect.js";
 
-export const recordAttendance = async (studentId, subjectId, date, status) => {
+export const recordAttendance = async (studentId, status) => {
     try {
         const attendance = await prisma.attendance.create({
             data: {
-                studentId,
-                subjectId,
-                date,
+                date: new Date.now(),
                 status,
+                studentId,
             },
         });
         return attendance;
