@@ -1,107 +1,71 @@
-import { saveAttendance } from '../service/attendance.service.js';  // Importing saveAttendance from Attendance service
+import BadRequest from '../error/error.js';
+import { recordAttendance,  getAllAttendance, findAllAttendanceByDate , updateAttendance, deleteAttendance } from '../service/attendance.service.js'; 
+    
 
 // Create a new Attendance
-export const createAttendance = async (req, res) => {
-    const { subjectName, code, enrollments, attendance } = req.body;
-
+export const createAttendance = async (req, res, next) => {
     try {
-        const createdAt = new Date();
-        const updatedAt = createdAt;
-
-        const subjectId = await saveAttendance(subjectName, code, enrollments, attendance, createdAt, updatedAt);
+        const { studentId, status  } = req.body;
         
-        res.status(201).json({
-            message: 'Attendance created successfully',
-            subjectId: subjectId,
-        });
+        const subjectId = await recordAttendance(studentId, status);
+        if(!subjectId) throw new BadRequest('An Error has occurred while taking attendance')
+        
+        res.status(201).json({ message: 'Attendance created successfully',subjectId: subjectId,});
     } catch (error) {
-        console.error(`Error in createAttendance controller: ${error.message}`);
-        res.status(500).json({ error: 'Internal server error' });
+       console.error(`Error in createAttendance controller: ${error.message}`);
+       next(error)
     }
 };
 
-// Get all Attendance
-export const getAllAttendance = async (req, res) => {
-    try {
-        const attendance = await prisma.attendance.findMany({
-            include: {
-                enrollments: true,
-                attendance: true,
-            },
-        });
-
-        res.status(200).json(attendance);
-    } catch (error) {
-        console.error(`Error in getAllAttendance controller: ${error.message}`);
-        res.status(500).json({ error: 'Internal server error' });
+export const getAllAttendances = async(req, res, next) => {
+    try{
+        const attendants = await getAllAttendance();
+        res.status(200).json(attendants);
+    }catch(error){
+        console.log(error)
+        next(error);
     }
-};
+}
 
-// Get a single Attendance by ID
-export const getAttendanceById = async (req, res) => {
-    const { id } = req.params;
+export const getAllAttendanceByDate = async(req, res, next) => {
+    try{
+      const {date} = req.params
+      const attendants = await findAllAttendanceByDate(date);
 
-    try {
-        const attendant = await prisma.attendant.findUnique({
-            where: { id: parseInt(id, 10) },
-            include: {
-                enrollments: true,
-                attendance: true,
-            },
-        });
-
-        if (!attendant) {
-            return res.status(404).json({ error: 'Attendant not found' });
-        }
-
-        res.status(200).json(attendant);
-    } catch (error) {
-        console.error(`Error in getAttendanceById controller: ${error.message}`);
-        res.status(500).json({ error: 'Internal server error' });
+      if(!attendants) throw new BadRequest('No attendance records found for the specified date');
+      res.status(200).json(attendants);
+    }catch(error){
+        console.log(error)
+        next(error);
     }
-};
+}
 
 // Update an Attendance
-export const updateAttendance = async (req, res) => {
-    const { id } = req.params;
-    const { subjectName, code, enrollments, attendance } = req.body;
-
+export const updateStudentAttendance = async (req, res, next) => {
     try {
-        const updatedAt = new Date();
+        const { id, status } = req.params;
 
-        const updateAttendance = await prisma.attendant.update({
-            where: { id: parseInt(id, 10) },
-            data: {
-                subjectName,
-                code,
-                enrollments,
-                attendance,
-                updatedAt,
-            },
-        });
+        const update = await updateAttendance(id, status);
+        if (!update) throw new BadRequest('Attendance not found');
 
-        res.status(200).json({
-            message: 'Attendance updated successfully',
-            subject: updateAttendance,
-        });
+        res.status(200).json({message: 'Attendance updated successfully', subject: updateAttendance });
     } catch (error) {
         console.error(`Error in updateAttendance controller: ${error.message}`);
-        res.status(500).json({ error: 'Internal server error' });
+        next(error);
     }
 };
 
 // Delete an Attendance
-export const deleteAttendance = async (req, res) => {
-    const { id } = req.params;
-
+export const deleteStudentAttendance = async (req, res, next) => {
     try {
-        await prisma.attendant.delete({
-            where: { id: parseInt(id, 10) },
-        });
+        const { id } = req.params;
+
+        const deleteResult = await deleteAttendance(id);
+        if (!deleteResult) throw new BadRequest('Attendance not found');
 
         res.status(200).json({ message: 'Attendance deleted successfully' });
     } catch (error) {
         console.error(`Error in deleteAttendance controller: ${error.message}`);
-        res.status(500).json({ error: 'Internal server error' });
+        next(error);
     }
 };

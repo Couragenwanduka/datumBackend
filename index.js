@@ -1,15 +1,15 @@
+import path from 'path';
 import dotenv from 'dotenv';
+import 'express-async-errors'; 
 import express from 'express';
+import { fileURLToPath } from 'url';
+import promoteStudents from './helper/cron.js'; 
 import router from './router/student.route.js';
 import adminRouter from './router/admin.route.js';
 import parentRouter from './router/parent.route.js';
-import attendanceRoutes from './router/attendance.route.js';
 import resultRouter from './router/result.route.js';
-import promoteStudents from './helper/cron.js';
-import 'express-async-errors';  // Ensure async errors are handled
-import errorHandling from './error/async.Error.js';  // Custom error handler
-import path from 'path';
-import { fileURLToPath } from 'url';
+import errorHandling from './error/async.Error.js';  
+import attendanceRouter from './router/attendance.route.js';
 
 // Load environment variables
 dotenv.config();
@@ -32,7 +32,7 @@ app.use('/api/student', router);
 app.use('/api/admin', adminRouter);
 app.use('/api/parent', parentRouter);
 app.use('/api/result', resultRouter);
-app.use('/api', attendanceRoutes);
+app.use('/api/attendance', attendanceRouter);
 
 // Error handling middleware (must be last)
 app.use(errorHandling);

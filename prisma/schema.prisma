@@ -13,17 +13,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Parent {
-  id            Int        @id
-  firstName     String
-  lastName      String
-  relationship  String
-  contactNumber String
-  email         String     @unique
-  password      String
-  createdAt     DateTime   @default(now())
-  students      Student[]  @relation("StudentParent")
-  updatedAt     DateTime      @updatedAt
+enum Status{
+  Present
+  Absent
+  Late
 }
 
 enum Term {
@@ -32,14 +25,14 @@ enum Term {
   ThirdTerm
 }
 
-enum ClassSection {
+enum ClassDivision {
   Purity
   Peace
   Love
   Wisdom
   Joy
 }
-enum GradeLevel {
+enum Class {
   Jss1
   Jss2
   Jss3
@@ -48,27 +41,17 @@ enum GradeLevel {
   Sss3
 }
 
-model Student {
-  id               Int     @id
-  firstName        String
-  lastName         String
-  dateOfBirth      DateTime
-  bloodGroup       String
-  gender           String
-  nationality      String
-  currentAddress   String
-  permanentAddress String
-  enrollmentDate   DateTime
-  gradeLevel       GradeLevel
-  classSection     ClassSection
-  term             Term
-  photo            String
-  attendance       Attendance[]
-  parentEmail      String
-  parent           Parent  @relation("StudentParent", fields: [parentEmail], references: [email])
-  results          Result[] @relation("StudentResult")
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
+enum StudentStatus {
+  Active
+  Transferred
+  Expelled
+  Graduated
+  Other
+}
+
+enum Gender {
+  Male
+  Female
 }
 
 enum Role {
@@ -76,58 +59,166 @@ enum Role {
   Teacher
 }
 
-model Administrator {
-  id                Int       @id
+enum ClassLevel {
+  JunoirSecondarySchool,
+  SeniorSecondarySchool
+}
+
+model Parent {
+  id                Int            @id
+  surName           String
   firstName         String
-  lastName          String
-  gender            String
-  dateOfBirth       DateTime
-  email             String     @unique
+  otherName         String
+  email             String         @unique
   password          String
-  contactNumber     String     @unique
-  currentAddress    String
-  permanentAddress  String
-  subject           String
-  hireDate          String
-  qualification     String
-  photo             String
-  role              Role
-  results           Result[]   @relation("ResultTeacher")
+  relationship      String
+  students          Student[]      @relation("StudentParent") 
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+}
+
+model Student {
+  id                Int          @id
+  surName           String
+  firstName         String
+  otherName         String
+  dateOfBirth       DateTime
+  bloodGroup        String
+  gender            Gender
+  nationality       String
+  address           String
+  enrollmentDate    DateTime      @default(now())
+  class             Class
+  classTier         ClassDivision
+  term              Term
+  picture           String
+  parentEmail       String
+  parent            Parent        @relation("StudentParent", fields: [parentEmail], references: [email])
+  results           Result[]      @relation("StudentResult")
+  attendance        Attendance[]
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  status            StudentStatus  @default(Active)
+  statusReason      String?      
+  statusChangeDate  DateTime? 
+}
+
+
+model Administrator {
+  id                 Int         @id
+  surName            String
+  firstName          String
+  otherName          String
+  gender             Gender
+  dateOfBirth        DateTime
+  email              String       @unique
+  password           String
+  phoneNumber        String       @unique
+  address            String
+  employmentRole     String
+  employmentDate     DateTime     @default(now())
+  qualification      String
+  picture            String
+  role               Role         @default("Teacher")
+  gradeLevel         String       @default("levelOne")
+  step               String       @default("stepOne")
+  results           Result[]      @relation("ResultTeacher")
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
 }
 
 model Result {
-  id             Int          @id @default(autoincrement())
-  firstName      String
-  lastName       String
-  subject        String
-  assignment     String
-  test           String
-  exam           String
-  grade          String
-  gradeLevel     GradeLevel
-  classSection   ClassSection
-  term           Term
-  teacher        Administrator @relation("ResultTeacher", fields: [teacherId], references: [id])
-  student        Student       @relation("StudentResult", fields: [studentId], references: [id])
-  studentId      Int
-  teacherId      Int
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-}
-
-enum Status{
-  Present
-  Absent
-  Late
+  id                 Int          @id @default(autoincrement())
+  studentId          Int
+  surName            String
+  firstName          String
+  otherName          String
+  subject            String
+  class              String
+  term               String
+  test               String
+  assignment         String
+  midTermTest        String
+  exam               String
+  total              String
+  average            String
+  position           String
+  grade              String 
+  teacherId          Int
+  teacher            Administrator @relation("ResultTeacher", fields: [teacherId], references: [id])
+  student            Student       @relation("StudentResult", fields: [studentId], references: [id])
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
 }
 
 model Attendance {
-  id            Int      @id @default(autoincrement())
-  date          DateTime
+  id            Int                 @id @default(autoincrement())
+  date          DateTime            @default(now())  
+  dayOfWeek     String              @default("Monday") 
+  time          String              @default("00:00")  
   status        Status  
-  student       Student  @relation(fields: [studentId], references: [id])
+  student       Student             @relation(fields: [studentId], references: [id])
   studentId     Int
-  createdAt     DateTime @default(now())
+  createdAt     DateTime            @default(now())
+}
+
+model Timetable {
+  id            Int                 @id @default(autoincrement())
+  dayOfWeek     String     
+  startTime     DateTime      
+  endTime       DateTime      
+  class         Class     
+  classTier     ClassDivision
+  subject       String      
+  teacher       Administrator       @relation(fields: [teacherId], references: [id])
+  teacherId     Int
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+}
+
+model SchemeOfWork {
+  id              Int               @id @default(autoincrement())
+  subject         String    
+  class           Class      
+  term            Term       
+  topics          Topic[]           @relation("SchemeTopics")
+  objectives      String    
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model Topic {
+  id              Int               @id @default(autoincrement())
+  title           String    
+  description     String     
+  week            Int        
+  schemeId        Int
+  schemeOfWork    SchemeOfWork      @relation("SchemeTopics", fields: [schemeId], references: [id])
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model Activities {
+  id              Int               @id @default(autoincrement())
+  title           String    
+  description     String     
+  date            DateTime   
+  time            String     
+}
+
+model Remarks {
+  id              Int               @id @default(autoincrement())
+  studentId       Int
+  student         Student           @relation(fields: [studentId], references: [id])
+  remark          String    
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model Subject {
+  id              Int               @id @default(autoincrement())
+  name            String        
+  classLevel           ClassLevel 
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
 }
