@@ -1,24 +1,41 @@
 import prisma from "../prisma/dbconnect.js";
 import { parse } from 'json2csv';
 import { generateId } from "../utils/id.js";
+import { addClassTier } from "../helper/classTier.js";
 
 export const saveStudent = async (studentsArray, email) => {
   try {
-    const studentsData = studentsArray.map(student => ({
-      id:generateId(),
-      firstName: student.firstName,
-      lastName: student.lastName,
-      dateOfBirth:   new Date(student.dateOfBirth), 
-      bloodGroup: student.bloodGroup,
-      gender: student.gender,
-      nationality: student.nationality,
-      currentAddress: student.currentAddress,
-      permanentAddress: student.permanentAddress,
-      enrollmentDate: new  Date(student.enrollmentDate), 
-      gradeLevel: student.gradeLevel,
-      classSection: student.classSection,
-      photo: student.photo,
-      parentEmail: email,
+    
+    // Iterate through the studentsArray and process each student individually
+    const studentsData = await Promise.all(studentsArray.map(async (student) => {
+      try {
+        // Call addClassTier for each student inside the map
+        const tier = await addClassTier(student.class);
+
+        return {
+          id: generateId(),
+          surName: student.surName,
+          firstName: student.firstName,
+          otherName: student.otherName,
+          dateOfBirth: new Date(student.dateOfBirth),
+          bloodGroup: student.bloodGroup,
+          gender: student.gender,
+          nationality: student.nationality,
+          stateOfOrigin: student.stateOfOrigin,
+          localGovernment: student.localGovernment,
+          address: student.address,
+          enrollmentDate: new Date(),
+          class: student.class,
+          classTier: tier,
+          term: student.term,
+          picture: student.picture,
+          previousSchool: student.previousSchool,
+          parentEmail: email,
+        };
+      } catch (error) {
+        console.error(`Error processing student ${student.firstName} ${student.surName}:`, error);
+        throw error; // Ensure errors in the map are propagated
+      }
     }));
 
     // Use Prisma transaction to handle batch operations

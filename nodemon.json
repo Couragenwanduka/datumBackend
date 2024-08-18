@@ -1,0 +1,6 @@
+{
+    "ignore": ["classlist.json"], 
+    "ext": "js,json",
+    "exec": "node index.js" 
+  }
+  

@@ -30,12 +30,13 @@ export const createStudent = async(req, res, next) => {
          const savedParent = await createParent(parent,hashedPassword);
          if(!savedParent) throw new BadRequest('Parent guardian not created');
 
-          // send onborading mail
+         // send onborading mail
          const sendMail = sendOnboardingMessage(email, password)
          if(!sendMail) console.log('mail did not send');
 
          const savedStudent = await saveStudent(students, email);
          if(!savedStudent) throw new BadRequest('No students created');
+
          
          res.status(201).json('Parent and student created successfully');
     }catch(error){

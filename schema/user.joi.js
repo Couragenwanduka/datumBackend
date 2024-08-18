@@ -1,14 +1,26 @@
 import Joi from 'joi';
 
+const capitalizeFirstLetter = (value, helpers) => {
+    const regex = /^[A-Z]/;
+    if (!regex.test(value)) {
+      return helpers.error('any.invalid'); // Custom error message
+    }
+    return value; // Valid input
+  };
+
 const students = Joi.array().items(
     Joi.object({
-        firstName: Joi.string().required().messages({
+        surName:  Joi.string().required().custom(capitalizeFirstLetter, 'First letter must be capitalised').messages({
+            'string.base': 'Surname should be a type of string',
+            'any.required': 'Surname is required'
+        }),
+        firstName:  Joi.string().required().custom(capitalizeFirstLetter, 'First letter must be capitalised').messages({
             'string.base': 'First name should be a type of string',
             'any.required': 'First name is required'
         }),
-        lastName: Joi.string().required().messages({
-            'string.base': 'Last name should be a type of string',
-            'any.required': 'Last name is required'
+        otherName:  Joi.string().required().custom(capitalizeFirstLetter, 'First letter must be capitalised').messages({
+            'string.base': 'Other name should be a type of string',
+            'any.required': 'Other name is required'
         }),
         dateOfBirth: Joi.date().required().messages({
             'date.base': 'Date of birth should be a valid date',
@@ -23,66 +35,76 @@ const students = Joi.array().items(
             'any.required': 'Gender is required',
             'any.only': 'Gender must be Male, Female, or Other'
         }),
-        nationality: Joi.string().required().messages({
+        nationality:  Joi.string().required().custom(capitalizeFirstLetter, 'First letter must be capitalised').messages({
             'string.base': 'Nationality should be a type of string',
             'any.required': 'Nationality is required'
         }),
-        currentAddress: Joi.string().required().messages({
+        stateOfOrigin:  Joi.string().required().custom(capitalizeFirstLetter, 'First letter must be capitalised').messages({
+            'string.base': 'State of origin should be a type of string',
+            'any.required': 'State of origin is required'
+        }),
+        localGovernment:  Joi.string().required().custom(capitalizeFirstLetter, 'First letter must be capitalised').messages({
+            'string.base': 'Local government should be a type of string',
+            'any.required': 'Local government is required'
+        }),
+        address:  Joi.string().required().custom(capitalizeFirstLetter, 'First letter must be capitalised').messages({
             'string.base': 'Current address should be a type of string',
             'any.required': 'Current address is required'
-        }),
-        permanentAddress: Joi.string().required().messages({
-            'string.base': 'Permanent address should be a type of string',
-            'any.required': 'Permanent address is required'
-        }),
-        photo: Joi.string().required().messages({
-            'string.base': 'Photo URL should be a type of string',
-            'any.required': 'Photo URL is required'
         }),
         enrollmentDate: Joi.date().required().messages({
             'date.base': 'Enrollment date should be a valid date',
             'any.required': 'Enrollment date is required'
         }),
-        gradeLevel: Joi.string().required().valid('Jss1' ,'Jss2','Jss3', 'Sss1', 'Sss2','Sss3').messages({
-            'string.base': 'Grade level should be a type of string',
-            'any.only': 'Grade level must be Jss1, Jss2, Jss3, Sss1, Sss2, or Sss3',
-            'any.required': 'Grade level is required'
-        }),
-        classSection: Joi.string().required().valid('Purity', 'Peace','Love','Wisdom','Joy').messages({
-            'string.base': 'Class section should be a type of string',
-            'any.only': 'Class section must be Purity, Peace, Love, Wisdom, or Joy',
-            'any.required': 'Class section is required'
+        class: Joi.string().required().valid('Jss1' ,'Jss2','Jss3', 'Sss1', 'Sss2','Sss3').messages({
+            'string.base': 'Class should be a type of string',
+            'any.only': 'Class must be Jss1, Jss2, Jss3, Sss1, Sss2, or Sss3',
+            'any.required': 'Class is required'
         }),
         term: Joi.string().required().valid('FirstTerm','SecondTerm','ThirdTerm').messages({
             'string.base': 'Term should be a type of string',
             'any.required': 'Term is required'
+        }),
+        picture: Joi.string().required().messages({
+            'string.base': 'Photo URL should be a type of string',
+            'any.required': 'Photo URL is required'
+        }),
+        previousSchool: Joi.string().required().custom(capitalizeFirstLetter, 'First letter must be capitalised').messages({
+            'string.base': 'Previous school should be a type of string',
+            'any.required': 'Previous school is required'
         })
     })
 )
 
 
 const parentGuardianRegistrationSchema = Joi.object({
-    firstName: Joi.string().required().messages({
+    surName: Joi.string().required().custom(capitalizeFirstLetter, 'First letter must be capitalised').messages({
+        'string.base': 'Surname should be a type of string',
+        'any.required': 'Surname is required'
+    }),
+    firstName: Joi.string().required().custom(capitalizeFirstLetter, 'First letter must be capitalised').messages({
         'string.base': 'First name should be a type of string',
         'any.required': 'First name is required'
     }),
-    lastName: Joi.string().required().messages({
-        'string.base': 'Last name should be a type of string',
-        'any.required': 'Last name is required'
-    }),
-    relationship: Joi.string().required().messages({
-        'string.base': 'Relationship should be a type of string',
-        'any.required': 'Relationship is required'
-    }),
-    contactNumber: Joi.string().required().messages({
-        'string.base': 'Contact number should be a type of string',
-        'any.required': 'Contact number is required'
+    otherName: Joi.string().required().custom(capitalizeFirstLetter, 'First letter must be capitalised').messages({
+        'string.base': 'other name should be a type of string',
+        'any.required': 'other name is required'
     }),
     email: Joi.string().email().required().messages({
         'string.base': 'Email should be a type of string',
         'string.email': 'Email must be a valid email',
         'any.required': 'Email is required'
     }),
+    phoneNumber: Joi.string().required().messages({
+        'string.base': 'Phone number should be a type of string',
+        'any.required': 'Phone number is required'
+    }),
+    relationship: Joi.string().required().valid('Father', 'Mother', 'Guardian')
+    .custom(capitalizeFirstLetter, 'First letter must be capitalised').messages({
+        'string.base': 'Relationship should be a type of string',
+        'any.required': 'Relationship is required'
+    })
+    
+    
 });
 
 export const studentRegistrationSchema = Joi.object({

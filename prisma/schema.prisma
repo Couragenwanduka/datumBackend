@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Status{
+enum Status {
   Present
   Absent
   Late
@@ -32,6 +26,7 @@ enum ClassDivision {
   Wisdom
   Joy
 }
+
 enum Class {
   Jss1
   Jss2
@@ -60,165 +55,174 @@ enum Role {
 }
 
 enum ClassLevel {
-  JunoirSecondarySchool,
+  JuniorSecondarySchool
   SeniorSecondarySchool
 }
 
 model Parent {
-  id                Int            @id
-  surName           String
-  firstName         String
-  otherName         String
-  email             String         @unique
-  password          String
-  relationship      String
-  students          Student[]      @relation("StudentParent") 
-  createdAt         DateTime       @default(now())
-  updatedAt         DateTime       @updatedAt
+  id           Int       @id @default(autoincrement())
+  surName      String
+  firstName    String
+  otherName    String
+  email        String    @unique
+  password     String
+  phoneNumber  String    @unique
+  relationship String
+  students     Student[] @relation("StudentParent")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }
 
 model Student {
-  id                Int          @id
-  surName           String
-  firstName         String
-  otherName         String
-  dateOfBirth       DateTime
-  bloodGroup        String
-  gender            Gender
-  nationality       String
-  address           String
-  enrollmentDate    DateTime      @default(now())
-  class             Class
-  classTier         ClassDivision
-  term              Term
-  picture           String
-  parentEmail       String
-  parent            Parent        @relation("StudentParent", fields: [parentEmail], references: [email])
-  results           Result[]      @relation("StudentResult")
-  attendance        Attendance[]
-  createdAt         DateTime       @default(now())
-  updatedAt         DateTime       @updatedAt
-  status            StudentStatus  @default(Active)
-  statusReason      String?      
-  statusChangeDate  DateTime? 
+  id               Int           @id @default(autoincrement())
+  surName          String
+  firstName        String
+  otherName        String
+  dateOfBirth      DateTime
+  bloodGroup       String
+  gender           Gender
+  nationality      String
+  stateOfOrigin     String
+  localGovernment  String
+  address          String
+  enrollmentDate   DateTime      @default(now())
+  class            Class
+  classTier        ClassDivision
+  term             Term
+  picture          String
+  previousSchool   String
+  parentEmail      String
+  parent           Parent        @relation("StudentParent", fields: [parentEmail], references: [email])
+  results          Result[]      @relation("StudentResult")
+  attendance       Attendance[]  @relation("StudentAttendance")
+  remarks          Remarks[]     @relation("StudentRemarks")
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  status           StudentStatus @default(Active)
+  statusReason     String?
+  statusChangeDate DateTime?
 }
 
-
 model Administrator {
-  id                 Int         @id
-  surName            String
-  firstName          String
-  otherName          String
-  gender             Gender
-  dateOfBirth        DateTime
-  email              String       @unique
-  password           String
-  phoneNumber        String       @unique
-  address            String
-  employmentRole     String
-  employmentDate     DateTime     @default(now())
-  qualification      String
-  picture            String
-  role               Role         @default("Teacher")
-  gradeLevel         String       @default("levelOne")
-  step               String       @default("stepOne")
-  results           Result[]      @relation("ResultTeacher")
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
+  id              Int         @id @default(autoincrement())
+  surName         String
+  firstName       String
+  otherName       String
+  gender          Gender
+  bloodGroup      String
+  dateOfBirth     DateTime
+  nationality     String
+  email           String      @unique
+  password        String
+  phoneNumber     String      @unique
+  address         String
+  stateOfOrign    String
+  localGovernment String
+  employmentRole  String
+  employmentDate  DateTime    @default(now())
+  qualification   String
+  picture         String
+  role            Role        @default(Teacher)
+  gradeLevel      String      @default("levelOne")
+  step            String      @default("stepOne")
+  results         Result[]    @relation("ResultTeacher")
+  timetables      Timetable[] @relation("TimetableTeacher")
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
 }
 
 model Result {
-  id                 Int          @id @default(autoincrement())
-  studentId          Int
-  surName            String
-  firstName          String
-  otherName          String
-  subject            String
-  class              String
-  term               String
-  test               String
-  assignment         String
-  midTermTest        String
-  exam               String
-  total              String
-  average            String
-  position           String
-  grade              String 
-  teacherId          Int
-  teacher            Administrator @relation("ResultTeacher", fields: [teacherId], references: [id])
-  student            Student       @relation("StudentResult", fields: [studentId], references: [id])
-  createdAt          DateTime      @default(now())
-  updatedAt          DateTime      @updatedAt
+  id          Int           @id @default(autoincrement())
+  studentId   Int
+  surName     String
+  firstName   String
+  otherName   String
+  subject     String
+  class       String
+  term        String
+  test        String
+  assignment  String
+  midTermTest String
+  exam        String
+  total       String
+  average     String
+  position    String
+  grade       String
+  teacherId   Int
+  teacher     Administrator @relation("ResultTeacher", fields: [teacherId], references: [id])
+  student     Student       @relation("StudentResult", fields: [studentId], references: [id])
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 }
 
 model Attendance {
-  id            Int                 @id @default(autoincrement())
-  date          DateTime            @default(now())  
-  dayOfWeek     String              @default("Monday") 
-  time          String              @default("00:00")  
-  status        Status  
-  student       Student             @relation(fields: [studentId], references: [id])
-  studentId     Int
-  createdAt     DateTime            @default(now())
+  id        Int      @id @default(autoincrement())
+  date      DateTime @default(now())
+  dayOfWeek String   @default("Monday")
+  time      String   @default("00:00")
+  status    Status
+  studentId Int
+  student   Student  @relation("StudentAttendance", fields: [studentId], references: [id])
+  createdAt DateTime @default(now())
 }
 
 model Timetable {
-  id            Int                 @id @default(autoincrement())
-  dayOfWeek     String     
-  startTime     DateTime      
-  endTime       DateTime      
-  class         Class     
-  classTier     ClassDivision
-  subject       String      
-  teacher       Administrator       @relation(fields: [teacherId], references: [id])
-  teacherId     Int
-  createdAt     DateTime            @default(now())
-  updatedAt     DateTime            @updatedAt
+  id        Int           @id @default(autoincrement())
+  dayOfWeek String
+  startTime DateTime
+  endTime   DateTime
+  class     Class
+  classTier ClassDivision
+  subject   String
+  teacherId Int
+  teacher   Administrator @relation("TimetableTeacher", fields: [teacherId], references: [id])
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
 }
 
 model SchemeOfWork {
-  id              Int               @id @default(autoincrement())
-  subject         String    
-  class           Class      
-  term            Term       
-  topics          Topic[]           @relation("SchemeTopics")
-  objectives      String    
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
+  id         Int      @id @default(autoincrement())
+  subject    String
+  class      Class
+  term       Term
+  topics     Topic[]  @relation("SchemeTopics")
+  objectives String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Topic {
-  id              Int               @id @default(autoincrement())
-  title           String    
-  description     String     
-  week            Int        
-  schemeId        Int
-  schemeOfWork    SchemeOfWork      @relation("SchemeTopics", fields: [schemeId], references: [id])
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
+  id           Int          @id @default(autoincrement())
+  title        String
+  description  String
+  week         Int
+  schemeId     Int
+  schemeOfWork SchemeOfWork @relation("SchemeTopics", fields: [schemeId], references: [id])
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
 }
 
 model Activities {
-  id              Int               @id @default(autoincrement())
-  title           String    
-  description     String     
-  date            DateTime   
-  time            String     
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  date        DateTime
+  time        String
 }
 
 model Remarks {
-  id              Int               @id @default(autoincrement())
-  studentId       Int
-  student         Student           @relation(fields: [studentId], references: [id])
-  remark          String    
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
+  id        Int      @id @default(autoincrement())
+  studentId Int
+  student   Student  @relation("StudentRemarks", fields: [studentId], references: [id])
+  remark    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Subject {
-  id              Int               @id @default(autoincrement())
-  name            String        
-  classLevel           ClassLevel 
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
+  id         Int        @id @default(autoincrement())
+  name       String
+  classLevel ClassLevel
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 }
