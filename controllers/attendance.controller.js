@@ -1,16 +1,24 @@
 import BadRequest from '../error/error.js';
-import { recordAttendance,  getAllAttendance, findAllAttendanceByDate , updateAttendance, deleteAttendance } from '../service/attendance.service.js'; 
+import { recordAttendance } from '../service/attendance.service.js'; 
+import { getAllAttendance } from '../service/attendance.service.js';
+import { findAllAttendanceByDate } from '../service/attendance.service.js';
+import { updateAttendance } from '../service/attendance.service.js';
+import { deleteAttendance } from '../service/attendance.service.js';
+import { existingAttendance } from '../service/attendance.service.js';
     
 
 // Create a new Attendance
 export const createAttendance = async (req, res, next) => {
     try {
-        const { studentId, status  } = req.body;
+        const { attendance } = req.body;
         
-        const subjectId = await recordAttendance(studentId, status);
-        if(!subjectId) throw new BadRequest('An Error has occurred while taking attendance')
+        const existing = await existingAttendance(attendance)
+        if(existing) throw new BadRequest('Attendance already exists for this student on this date');
         
-        res.status(201).json({ message: 'Attendance created successfully',subjectId: subjectId,});
+        const saveAttendance = await recordAttendance(attendance);
+        if(!saveAttendance) throw new BadRequest('An Error has occurred while taking attendance')
+        
+        res.status(201).json({ message: 'Attendance created successfully'});
     } catch (error) {
        console.error(`Error in createAttendance controller: ${error.message}`);
        next(error)

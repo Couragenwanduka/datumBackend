@@ -1,12 +1,5 @@
 import Joi from 'joi';
-
-const capitalizeFirstLetter = (value, helpers) => {
-    const regex = /^[A-Z]/;
-    if (!regex.test(value)) {
-      return helpers.error('any.invalid'); // Custom error message
-    }
-    return value; // Valid input
-  };
+import { capitalizeFirstLetter } from '../utils/capitalize.js';
 
 const students = Joi.array().items(
     Joi.object({

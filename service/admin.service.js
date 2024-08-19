@@ -6,20 +6,26 @@ const saveAdminstrator = async(admin) =>{
         const savedData = await prisma.Administrator.create({
             data:{
                 id:generateId(),
+                surName: admin.surName,
                 firstName: admin.firstName,
-                lastName: admin.lastName,
+                otherName: admin.otherName,
                 gender:admin.gender,
+                bloodGroup:admin.bloodGroup,
                 dateOfBirth: new Date(admin.dateOfBirth),
+                nationality: admin.nationality,
                 email: admin.email,
                 password: admin.hashedPassword,
-                contactNumber: admin.contactNumber,
-                currentAddress: admin.currentAddress,
-                permanentAddress: admin.permanentAddress,
-                subject: admin.subject,
-                hireDate: admin.hireDate,
+                phoneNumber: admin.phoneNumber,
+                address: admin.address,
+                stateOfOrign: admin.stateOfOrigin,
+                localGovernment: admin.localGovernment,
+                employmentRole: admin.employmentRole,
+                employmentDate: new Date(),
                 qualification: admin.qualification,
-                photo: admin.photo,
+                picture: admin.photo,
                 role: admin.role,
+                gradeLevel: admin.gradeLevel,
+                step: admin.step
             }
         });
         return savedData;

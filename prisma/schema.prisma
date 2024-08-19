@@ -82,7 +82,7 @@ model Student {
   bloodGroup       String
   gender           Gender
   nationality      String
-  stateOfOrigin     String
+  stateOfOrigin    String
   localGovernment  String
   address          String
   enrollmentDate   DateTime      @default(now())
@@ -119,16 +119,17 @@ model Administrator {
   stateOfOrign    String
   localGovernment String
   employmentRole  String
-  employmentDate  DateTime    @default(now())
+  employmentDate  DateTime      @default(now())
   qualification   String
   picture         String
-  role            Role        @default(Teacher)
-  gradeLevel      String      @default("levelOne")
-  step            String      @default("stepOne")
-  results         Result[]    @relation("ResultTeacher")
-  timetables      Timetable[] @relation("TimetableTeacher")
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  role            Role          @default(Teacher)
+  gradeLevel      String        @default("levelOne")
+  step            String        @default("stepOne")
+  results         Result[]      @relation("ResultTeacher")
+  timetables      Timetable[]   @relation("TimetableTeacher")
+  attendance      Attendance[]  @relation("Teacher")
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 }
 
 model Result {
@@ -156,14 +157,18 @@ model Result {
 }
 
 model Attendance {
-  id        Int      @id @default(autoincrement())
-  date      DateTime @default(now())
-  dayOfWeek String   @default("Monday")
-  time      String   @default("00:00")
+  id        Int            @id @default(autoincrement())
+  date      DateTime       @default(now())
+  dayOfWeek String         @default("Monday")
+  time      String         @default("00:00")
+  teacherId Int            @default(1)
+  class     String         @default("DefaultClass")
+  classTier ClassDivision  @default(Purity)
   status    Status
-  studentId Int
-  student   Student  @relation("StudentAttendance", fields: [studentId], references: [id])
-  createdAt DateTime @default(now())
+  studentId Int           
+  student   Student        @relation("StudentAttendance", fields: [studentId], references: [id])
+  teacher   Administrator  @relation("Teacher", fields: [teacherId], references: [id])
+  createdAt DateTime       @default(now())
 }
 
 model Timetable {
@@ -206,8 +211,8 @@ model Activities {
   id          Int      @id @default(autoincrement())
   title       String
   description String
-  date        DateTime
-  time        String
+  startDate   DateTime
+  endDate     DateTime
 }
 
 model Remarks {

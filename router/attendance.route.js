@@ -5,13 +5,13 @@ import { validator } from '../middlewares/validator.middleware.js';
 import { idSchema } from '../schema/user.joi.js';
 import { dateSchema } from '../schema/attendance.joi.js';
 import { updateAttendanceSchema } from '../schema/attendance.joi.js';
-import { attendanceSchema } from '../schema/attendance.joi.js';
+import { validateAttendanceSChema } from '../schema/attendance.joi.js';
 import { getAllAttendances } from '../controllers/attendance.controller.js';
 import { getAllAttendanceByDate } from '../controllers/attendance.controller.js';
 import { updateStudentAttendance, deleteStudentAttendance } from '../controllers/attendance.controller.js';
 
 // Record attendance for a student
-attendanceRouter.post('/attendance', [validator(attendanceSchema)], createAttendance);
+attendanceRouter.post('/attendance', [validator(validateAttendanceSChema)], createAttendance);
 
 // // Get all attendance records
 attendanceRouter.get('/attendance', getAllAttendances);

@@ -9,7 +9,9 @@ import adminRouter from './router/admin.route.js';
 import parentRouter from './router/parent.route.js';
 import resultRouter from './router/result.route.js';
 import errorHandling from './error/async.Error.js';  
+import activityRouter from './router/activity.route.js';
 import attendanceRouter from './router/attendance.route.js';
+import subjectRouter from './router/subject.route.js';
 
 // Load environment variables
 dotenv.config();
@@ -32,7 +34,9 @@ app.use('/api/student', router);
 app.use('/api/admin', adminRouter);
 app.use('/api/parent', parentRouter);
 app.use('/api/result', resultRouter);
-app.use('/api/attendance', attendanceRouter);
+app.use('/api', attendanceRouter);
+app.use('/api/activity', activityRouter);
+app.use('/api/subject', subjectRouter);
 
 // Error handling middleware (must be last)
 app.use(errorHandling);

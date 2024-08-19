@@ -6,8 +6,8 @@ import { deleteAllResults } from "../service/result.service.js"
 export const deleteEverything = async(req, res) => {
     try{
       // await deleteAllResults()
-      await deleteAllStudent()
-      await deleteAllParent()
+      // await deleteAllStudent()
+      // await deleteAllParent()
       await deleteAllAdmin()
 
       res.status(200).json('Everything deleted successfully')
