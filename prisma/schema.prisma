@@ -220,6 +220,9 @@ model Remarks {
   studentId Int
   student   Student  @relation("StudentRemarks", fields: [studentId], references: [id])
   remark    String
+  class     Class
+  term      Term
+  subject   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

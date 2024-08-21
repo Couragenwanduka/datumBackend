@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-     "build": "prisma generate && your_build_command",
-     "start": "prisma generate && node index.js"
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",

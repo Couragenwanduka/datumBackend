@@ -12,6 +12,7 @@ import errorHandling from './error/async.Error.js';
 import activityRouter from './router/activity.route.js';
 import attendanceRouter from './router/attendance.route.js';
 import subjectRouter from './router/subject.route.js';
+import remarkRouter from './router/remark.route.js';
 
 // Load environment variables
 dotenv.config();
@@ -37,6 +38,7 @@ app.use('/api/result', resultRouter);
 app.use('/api', attendanceRouter);
 app.use('/api/activity', activityRouter);
 app.use('/api/subject', subjectRouter);
+app.use('/api/remark', remarkRouter);
 
 // Error handling middleware (must be last)
 app.use(errorHandling);

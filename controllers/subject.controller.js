@@ -45,6 +45,9 @@ export const updateSubjectById = async(req, res, next) => {
     try{
        const {subjectId ,name, classLevel} = req.body;
 
+       const subject = await findSubjectById(subjectId);
+       if(!subject) throw new BadRequest('Subject not found');
+
        const updatedSubject = await updateSubject(subjectId, name, classLevel);
        if(!updatedSubject) throw new BadRequest('Failed to update subject');
 
@@ -57,6 +60,9 @@ export const updateSubjectById = async(req, res, next) => {
 export const deleteSubjectById = async(req, res, next) => {
     try{
        const subjectId = req.params.id;
+
+       const subject = await findSubjectById(subjectId);
+       if(!subject) throw new BadRequest('Subject not found');
 
        const deletedSubject = await deleteSubject(subjectId);
 

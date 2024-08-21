@@ -27,7 +27,7 @@ export const findSubjectById = async(subjectId) => {
     try{
         const subject = await prisma.subject.findUnique({
             where:{
-                id: subjectId,
+                id: parseInt(subjectId,10),
             }
         });
         return subject;
@@ -40,7 +40,7 @@ export const updateSubject = async(subjectId, name, classLevel) => {
     try{
         const updatedSubject = await prisma.subject.update({
             where:{
-                id: subjectId,
+                id: parseInt(subjectId,10),
             },
             data:{
                 name,
@@ -57,7 +57,7 @@ export const deleteSubject = async(subjectId) => {
     try{
         await prisma.subject.delete({
             where:{
-                id: subjectId,
+                id:parseInt(subjectId,10),
             }
         });
         return { message: "Subject deleted successfully" };

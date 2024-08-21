@@ -17,12 +17,12 @@ subjectRouter.post('/createSubject', [validator(subjectSchema)],createSubject);
 subjectRouter.get('/getAllSubjects', getAllSubjects);
 
 // Get a single subject by id
-subjectRouter.get('/getSubjectById/:id', [validator(subjectIdSchema)],getSubjectById);
+subjectRouter.get('/getSubjectById/:id', [validator(subjectIdSchema, 'params')],getSubjectById);
 
 // Update a subject by id
-subjectRouter.put('/updateSubjectById/:id', [validator(updateSubjectSchema)],updateSubjectById);
+subjectRouter.patch('/updateSubjectById', [validator(updateSubjectSchema)],updateSubjectById);
 
 // Delete a subject by id
-subjectRouter.delete('/deleteSubjectById/:id', [validator(subjectIdSchema)],deleteSubjectById);
+subjectRouter.delete('/deleteSubjectById/:id', [validator(subjectIdSchema, 'params')],deleteSubjectById);
 
 export default subjectRouter;

@@ -1,7 +1,7 @@
 import BadRequest from './error.js';
 
 const errorHandling = (err, req, res, next) => {
-  // Check if the error is an instance of BadRequest
+  // Handle custom BadRequest errors
   if (err instanceof BadRequest) {
     return res.status(err.statusCode).json({
       message: err.message,
@@ -9,33 +9,46 @@ const errorHandling = (err, req, res, next) => {
     });
   }
 
-  // Handle validation errors (optional, if you use libraries like Joi or express-validator)
-  if (err.isJoi) { // Example condition for Joi validation errors
+  // Handle validation errors (e.g., from Joi or express-validator)
+  if (err.isJoi) {
     return res.status(400).json({
       message: 'Validation Error',
       details: err.details,
       success: false,
     });
   }
-  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
-    return res.status(400).json({ message: err.message, name: err.name, stack: err.stack, });
-  }
-  if (err instanceof TypeError) {
-    // Check if the error object has a status of 400 and a 'body' property
-    if (err.status === 400 && 'body' in err) {
-      return res.status(400).json({
-        message: err.message,
-        name: err.name,
-        stack: err.stack, 
-      });
-    }
-  }
-  
 
-  // Log the error for internal tracking (optional)
+  // Handle syntax errors in JSON parsing
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    return res.status(400).json({
+      message: err.message,
+      name: err.name,
+      stack: err.stack,
+    });
+  }
+
+  // Handle TypeErrors specifically for bad requests
+  if (err instanceof TypeError && err.status === 400 && 'body' in err) {
+    return res.status(400).json({
+      message: err.message,
+      name: err.name,
+      stack: err.stack,
+    });
+  }
+
+  // Handle database connection errors
+  if (err.message.includes("Can't reach database server")) {
+    console.error("Database connection error:", err.message);
+    return res.status(503).json({
+      message: "Unable to connect to the database. Please check your connection and try again.",
+      success: false,
+    });
+  }
+
+  // Log any unhandled errors for internal tracking
   console.error('Unhandled error:', err);
 
-  // Handle other types of errors
+  // Default to 500 Internal Server Error for other types of errors
   res.status(500).json({
     message: 'Internal Server Error',
     success: false,

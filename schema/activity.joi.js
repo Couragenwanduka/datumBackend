@@ -20,14 +20,14 @@ export const activitySchema = Joi.object({
     })
 })
 export const activityId = Joi.object({
-    activityId:Joi.string().required().messages({
+    id:Joi.string().required().messages({
         'string.base': 'Activity ID should be a type of string',
         'any.required': 'Activity ID is required'
     })
 })
 
 export const updateActivitySchema = Joi.object({
-    activityId: Joi.string().required().messages({
+    activityId: Joi.number().required().messages({
         'string.base': 'Activity ID should be a type of string',
         'any.required': 'Activity ID is required'
     }),

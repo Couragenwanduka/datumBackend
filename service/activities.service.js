@@ -2,7 +2,7 @@ import prisma from "../prisma/dbconnect.js";
 
 export const saveActivity = async(title, description, startDate, endDate) => {
     try{
-        const savedActivity = await prisma.activity.create({
+        const savedActivity = await prisma.Activities.create({
             data:{
                 title,
                 description,
@@ -18,7 +18,7 @@ export const saveActivity = async(title, description, startDate, endDate) => {
 
 export const findAllActivities = async() => {
     try{
-        const activities = await prisma.activity.findMany();
+        const activities = await prisma.Activities.findMany();
         return activities;
     }catch(error){
         throw new Error(`Error fetching all activities: ${error.message}`);
@@ -27,9 +27,9 @@ export const findAllActivities = async() => {
 
 export const findActivityById = async(activityId) => {
     try{
-        const activity = await prisma.activity.findUnique({
+        const activity = await prisma.Activities.findUnique({
             where:{
-                id: activityId,
+                id: parseInt(activityId,10),
             }
         });
         return activity;
@@ -40,7 +40,7 @@ export const findActivityById = async(activityId) => {
 
 export const updateActivity = async(activityId, title, description, startDate, endDate) => {
     try{
-        const updatedActivity = await prisma.activity.update({
+        const updatedActivity = await prisma.Activities.update({
             where:{
                 id: activityId,
             },
@@ -59,9 +59,9 @@ export const updateActivity = async(activityId, title, description, startDate, e
 
 export const deleteActivity = async(activityId) => {
     try{
-        await prisma.activity.delete({
+        await prisma.Activities.delete({
             where:{
-                id: activityId,
+                id: parseInt(activityId,10),
             }
         });
         return { message: "Activity deleted successfully" };
