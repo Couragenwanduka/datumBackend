@@ -1,0 +1,44 @@
+{
+  "Jss1": {
+    "Purity": 1,
+    "Peace": 0,
+    "Love": 0,
+    "Wisdom": 0,
+    "Joy": 0
+  },
+  "Jss2": {
+    "Purity": 0,
+    "Peace": 0,
+    "Love": 0,
+    "Wisdom": 0,
+    "Joy": 0
+  },
+  "Jss3": {
+    "Purity": 0,
+    "Peace": 0,
+    "Love": 0,
+    "Wisdom": 0,
+    "Joy": 0
+  },
+  "Sss1": {
+    "Purity": 1,
+    "Peace": 1,
+    "Love": 0,
+    "Wisdom": 0,
+    "Joy": 0
+  },
+  "Sss2": {
+    "Purity": 0,
+    "Peace": 0,
+    "Love": 0,
+    "Wisdom": 0,
+    "Joy": 0
+  },
+  "Sss3": {
+    "Purity": 0,
+    "Peace": 0,
+    "Love": 0,
+    "Wisdom": 0,
+    "Joy": 0
+  }
+}

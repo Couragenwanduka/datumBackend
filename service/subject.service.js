@@ -1,71 +1,67 @@
 import prisma from "../prisma/dbconnect.js";
 
-// Create a new subject
-export const createSubject = async (name, code) => {
-    try {
-        const subject = await prisma.subject.create({
-            data: {
+export const saveSubject = async(name, classLevel) => {
+    try{
+        const savedSubject = await prisma.subject.create({
+            data:{
                 name,
-                code,
-            },
+                classLevel,
+            }
         });
-        return subject;
-    } catch (error) {
-        console.error(`Error creating subject: ${error.message}`);
-        throw error;
+        return savedSubject;
+    }catch(error){
+        throw new Error(`Error saving subject: ${error.message}`);
     }
-};
+}
 
-// Get all subjects
-export const getAllSubjects = async () => {
-    try {
+export const findAllSubjects = async() => {
+    try{
         const subjects = await prisma.subject.findMany();
         return subjects;
-    } catch (error) {
-        console.error(`Error fetching subjects: ${error.message}`);
-        throw error;
+    }catch(error){
+        throw new Error(`Error fetching all subjects: ${error.message}`);
     }
-};
+}
 
-// Get a subject by ID
-export const getSubjectById = async (id) => {
-    try {
+export const findSubjectById = async(subjectId) => {
+    try{
         const subject = await prisma.subject.findUnique({
-            where: { id },
+            where:{
+                id: parseInt(subjectId,10),
+            }
         });
         return subject;
-    } catch (error) {
-        console.error(`Error fetching subject by ID: ${error.message}`);
-        throw error;
+    }catch(error){
+        throw new Error(`Error fetching subject by id: ${error.message}`);
     }
-};
+}
 
-// Update a subject by ID
-export const updateSubject = async (id, name, code) => {
-    try {
+export const updateSubject = async(subjectId, name, classLevel) => {
+    try{
         const updatedSubject = await prisma.subject.update({
-            where: { id },
-            data: {
-                name,
-                code,
+            where:{
+                id: parseInt(subjectId,10),
             },
+            data:{
+                name,
+                classLevel,
+            }
         });
         return updatedSubject;
-    } catch (error) {
-        console.error(`Error updating subject: ${error.message}`);
-        throw error;
+    }catch(error){
+        throw new Error(`Error updating subject: ${error.message}`);
     }
-};
+}
 
-// Delete a subject by ID
-export const deleteSubject = async (id) => {
-    try {
+export const deleteSubject = async(subjectId) => {
+    try{
         await prisma.subject.delete({
-            where: { id },
+            where:{
+                id:parseInt(subjectId,10),
+            }
         });
         return { message: "Subject deleted successfully" };
-    } catch (error) {
-        console.error(`Error deleting subject: ${error.message}`);
-        throw error;
+    }catch(error){
+        throw new Error(`Error deleting subject: ${error.message}`);
     }
-};
+}

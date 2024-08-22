@@ -13,9 +13,10 @@ import { sendOnboardingTeacherMessage } from "../helper/nodemailer.js";
  * It performs validation, checks for existing records, hashes the password,
  * saves the new admin to the database, and sends an onboarding email.
  */
-export const createAdmin = async (req, res) => {
+export const createAdmin = async (req, res, next) => {
   try {
-    const { firstName, lastName, gender, dateOfBirth, email, contactNumber, currentAddress, permanentAddress, subject, hireDate, qualification, role } = req.body;
+    const { surName, firstName, otherName, gender, bloodGroup, dateOfBirth, nationality, email, phoneNumber, address, stateOfOrigin, localGovernment, 
+            employmentRole, employmentDate, qualification, role, gradeLevel ,step } = req.body;
 
     const file = req.file;
     if(!file) throw new BadRequest({ status: 'No file uploaded' });
@@ -40,19 +41,25 @@ export const createAdmin = async (req, res) => {
     const hashedPassword = await hashPassword(password);
     
     const admin = {
-      firstName,
-      lastName,
-      gender,
-      dateOfBirth,
-      email,
-      contactNumber,
-      currentAddress,
-      permanentAddress,
-      subject,
-      hireDate,
-      qualification,
-      photo,
-      role,
+       surName,
+       firstName,
+       otherName,
+       gender,
+       bloodGroup,
+       dateOfBirth,
+       nationality,
+       email,
+       phoneNumber,
+       address,
+       stateOfOrigin,
+       localGovernment,
+       employmentRole,
+       employmentDate,
+       qualification,
+       photo,
+       role,
+       gradeLevel,
+       step, 
        hashedPassword, // hashed password is stored in the database for security reasons
     }
     // Save the new admin's details, including the hashed password, to the database
@@ -60,12 +67,12 @@ export const createAdmin = async (req, res) => {
     fs.unlinkSync(file.path);
     
     // Send an onboarding email to the new admin with their credentials
-    const sendMail = sendOnboardingTeacherMessage(email, password,firstName,subject);
+    const sendMail = sendOnboardingTeacherMessage(email, password,firstName,employmentRole);
     if (!sendMail) return 'Mail did not send';
 
     res.status(201).json('Adminstrator created successfully');
   } catch (error) {
     console.log(error);
-    res.status(500).json(`Error creating admin: ${error.message}`);
+    next(error);
   }
 };

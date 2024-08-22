@@ -1,18 +1,21 @@
 import prisma from "../prisma/dbconnect.js";
+import { generateId } from "../utils/id.js";
 
-export const createParent = async (firstName, lastName, relationship, contactNumber, email, password) => {
+export const createParent = async (parent,hashedPassword) => {
   try {
-    const parent = await prisma.parent.create({
+    const savedParent = await prisma.parent.create({
       data: {
-        firstName,
-        lastName,
-        relationship,
-        contactNumber,
-        email,
-        password,
+        id: generateId(),
+        surName: parent.surName,
+        firstName: parent.firstName,
+        otherName: parent.otherName,
+        email: parent.email,
+        password: hashedPassword,
+        phoneNumber: parent.phoneNumber,
+        relationship: parent.relationship,
       },
     });
-    return parent;
+    return savedParent;
   } catch (error) {
     throw new Error(`Error creating student: ${error.message}`);
   }

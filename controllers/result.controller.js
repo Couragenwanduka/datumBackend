@@ -22,8 +22,8 @@ export const createResult = async (req, res) => {
 
     const results = await Promise.all(
       data.map(async (result) => {
-        const { firstName, lastName, subject, assignment, test, exam, grade, gradeLevel, classSection, term, teacher, studentId } = result;
-          const {error} = validateResult( firstName, lastName, subject, assignment, test, exam, grade, gradeLevel, classSection, term, teacher, studentId )
+        const { studentId, surName, firstName, otherName, subject, Class, term, test, assignment, midTermTest, exam, total, average, position, grade,teacherId } = result;
+          const {error} = validateResult( studentId, surName, firstName, otherName, subject, Class, term, test, assignment, midTermTest, exam, total, average, position, grade,teacherId )
           if (error) {
             invalidData.push(`Validation error for student ID: ${studentId}, Error: ${error.message}`);
             return null;
@@ -35,15 +35,14 @@ export const createResult = async (req, res) => {
             return null;
           }
 
-          if (match.firstName !== firstName || match.lastName !== lastName) {
+          if (match.firstName !== firstName || match.surName !== surName) {
             invalidData.push(`Name mismatch for student ID: ${studentId}`);
             return null;
           }
 
-          return await saveResult(firstName, lastName, subject, assignment, test, exam, grade, gradeLevel, classSection, term, teacher, id);
+          return await saveResult(studentId, surName, firstName, otherName, subject, Class, term, test, assignment, midTermTest, exam, total, average, position, grade,teacherId );
       })
     );
-    fs.unlink(file.path)
     // Filter out null results (errors)
     const successfulResults = results.filter(result => result !== null);
 
@@ -52,7 +51,13 @@ export const createResult = async (req, res) => {
        console.log(invalidData)
       return res.status(400).json({ message: "Some records were not processed", errors: invalidData });
     }
-    fs.unlink(file.path)
+    fs.unlink(file.path, (err) => {
+      if (err) {
+          console.error(`Error deleting file: ${err.message}`);
+          throw err;
+      }
+      // Continue with the rest of your code
+  });
 
     return res.status(201).json({ message: "Results created successfully", results: successfulResults });
     

@@ -7,8 +7,8 @@ export const deleteEverything = async(req, res) => {
     try{
       // await deleteAllResults()
       // await deleteAllStudent()
-      await deleteAllParent()
-      // await deleteAllAdmin()
+      // await deleteAllParent()
+      await deleteAllAdmin()
 
       res.status(200).json('Everything deleted successfully')
     }catch(error){

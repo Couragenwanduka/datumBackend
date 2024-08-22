@@ -1,53 +1,28 @@
 import express from 'express';
-import { createSubject, getAllSubjects, getSubjectById, updateSubject, deleteSubject } from '../service/subject.service.js';
+const subjectRouter = express.Router();
+import { createSubject } from "../controllers/subject.controller.js";
+import { getAllSubjects } from "../controllers/subject.controller.js";
+import { getSubjectById } from "../controllers/subject.controller.js";
+import { updateSubjectById } from "../controllers/subject.controller.js";
+import { deleteSubjectById } from "../controllers/subject.controller.js";
+import { validator } from '../middlewares/validator.middleware.js';
+import { subjectSchema } from '../schema/subject.joi.js';
+import { subjectIdSchema } from '../schema/subject.joi.js';
+import { updateSubjectSchema } from '../schema/subject.joi.js';
 
-const router = express.Router();
+// Create a new subject
+subjectRouter.post('/createSubject', [validator(subjectSchema)],createSubject);
 
-router.post('/subjects', async (req, res) => { 
-    try {
-        const { name, code } = req.body;
-        const subject = await createSubject(name, code);
-        res.status(201).json(subject);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
+// Get all subjects
+subjectRouter.get('/getAllSubjects', getAllSubjects);
 
-router.get('/subjects', async (req, res) => {
-    try {
-        const subjects = await getAllSubjects();
-        res.status(200).json(subjects);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
+// Get a single subject by id
+subjectRouter.get('/getSubjectById/:id', [validator(subjectIdSchema, 'params')],getSubjectById);
 
-router.get('/subjects/:id', async (req, res) => {
-    try {
-        const subject = await getSubjectById(parseInt(req.params.id));
-        res.status(200).json(subject);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
+// Update a subject by id
+subjectRouter.patch('/updateSubjectById', [validator(updateSubjectSchema)],updateSubjectById);
 
-router.put('/subjects/:id', async (req, res) => {
-    try {
-        const { name, code } = req.body;
-        const updatedSubject = await updateSubject(parseInt(req.params.id), name, code);
-        res.status(200).json({ message: "Subject updated successfully" });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
+// Delete a subject by id
+subjectRouter.delete('/deleteSubjectById/:id', [validator(subjectIdSchema, 'params')],deleteSubjectById);
 
-router.delete('/subjects/:id', async (req, res) => {
-    try {
-        await deleteSubject(parseInt(req.params.id));
-        res.status(200).json({ message: "Subject deleted successfully" });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-export default router;
+export default subjectRouter;
