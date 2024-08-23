@@ -1,5 +1,6 @@
 import path from 'path';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import 'express-async-errors'; 
 import express from 'express';
 import { fileURLToPath } from 'url';
@@ -26,9 +27,18 @@ const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const corsOptions = {
+  origin: ['http://localhost:5173', 'https://datum-school-management.vercel.app'],
+  methods: ['GET','POST', 'PUT', 'DELETE', 'PATCH'],
+  credentials: true,
+  preflightContinue: true,
+  optionsSuccessStatus: 200 
+};
+
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors(corsOptions))
 
 // Route handlers
 app.use('/api/student', router);
@@ -42,7 +52,6 @@ app.use('/api/remark', remarkRouter);
 
 // Error handling middleware (must be last)
 app.use(errorHandling);
-
 
 app.get("/", function (req,res){
   res.send("Welcome to Datum Development School App... Delevoped by Courage Nduka and Ani Okechukwu")
