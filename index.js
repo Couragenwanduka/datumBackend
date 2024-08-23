@@ -28,7 +28,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const corsOptions = {
-  origin: ['http://localhost:5173/', 'https://datum-school-management.vercel.app/'],
+  origin: '*',
   methods: ['GET','POST', 'PUT', 'DELETE', 'PATCH'],
   credentials: true,
   preflightContinue: true,
