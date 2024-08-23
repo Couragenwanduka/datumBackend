@@ -44,15 +44,6 @@ const students = Joi.array().items(
             'string.base': 'Current address should be a type of string',
             'any.required': 'Current address is required'
         }),
-        enrollmentDate: Joi.date().required().messages({
-            'date.base': 'Enrollment date should be a valid date',
-            'any.required': 'Enrollment date is required'
-        }),
-        class: Joi.string().required().valid('Jss1' ,'Jss2','Jss3', 'Sss1', 'Sss2','Sss3').messages({
-            'string.base': 'Class should be a type of string',
-            'any.only': 'Class must be Jss1, Jss2, Jss3, Sss1, Sss2, or Sss3',
-            'any.required': 'Class is required'
-        }),
         term: Joi.string().required().valid('FirstTerm','SecondTerm','ThirdTerm').messages({
             'string.base': 'Term should be a type of string',
             'any.required': 'Term is required'
