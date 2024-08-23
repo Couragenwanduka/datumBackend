@@ -1,12 +1,19 @@
-# Exported from Render on 2024-08-15T04:55:06Z
-databases:
-- name: postgres
-  databaseName: datumDb?schema=public
-  user: postgres
+# Exported from Render on 2024-08-23T08:17:02Z
+services:
+- type: web
+  name: PgHero-dpg-cqud6gaj1k6c73du9f90-a
+  runtime: image
+  image:
+    url: docker.io/ankane/pghero:latest
   plan: free
+  envVars:
+  - key: WEB_CONCURRENCY
+    sync: false
+  - key: PGHERO_PASSWORD
+    sync: false
+  - key: PGHERO_USERNAME
+    sync: false
+  - key: DATABASE_URL
+    sync: false
   region: oregon
-  ipAllowList:
-  - source: 0.0.0.0/0 
-    description: everywhere
-  postgresMajorVersion: "16"
 version: "1"
