@@ -9,7 +9,7 @@ const saveResult = async(studentId, surName, firstName, otherName, subject, Clas
          otherName,
          subject,
          class: Class,
-         term,
+         term, 
          test,
          assignment,
          midTermTest,

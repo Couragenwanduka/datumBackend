@@ -1,0 +1,15 @@
+{
+    "version": 2,
+    "builds": [
+      { 
+        "src": "nodemon index.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "nodemon index.js"
+      }
+    ]
+  }
