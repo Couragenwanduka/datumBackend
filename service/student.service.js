@@ -82,6 +82,15 @@ export const findStudentById = async(studentId) => {
             where: {
                 id: studentId,
             },
+            include:{
+               parent: true,
+               remarks: {
+                   orderBy: {
+                       createdAt: 'desc',
+                   },
+               },
+               attendance: true,
+            }
         });
         return student;
     } catch (error) {
