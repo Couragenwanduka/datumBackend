@@ -4,6 +4,7 @@ import cors from 'cors';
 import 'express-async-errors'; 
 import express from 'express';
 import { fileURLToPath } from 'url';
+import connectDb from './config/connectDb.js';
 import promoteStudents from './helper/cron.js'; 
 import router from './router/student.route.js';
 import adminRouter from './router/admin.route.js';
@@ -14,6 +15,10 @@ import activityRouter from './router/activity.route.js';
 import attendanceRouter from './router/attendance.route.js';
 import subjectRouter from './router/subject.route.js';
 import remarkRouter from './router/remark.route.js';
+import feedbackRouter from './router/feedback.route.js';
+
+// Connect to MongoDB
+connectDb();
 
 // Load environment variables
 dotenv.config();
@@ -49,6 +54,7 @@ app.use('/api', attendanceRouter);
 app.use('/api/activity', activityRouter);
 app.use('/api/subject', subjectRouter);
 app.use('/api/remark', remarkRouter);
+app.use('/api/feedback', feedbackRouter);
 
 // Error handling middleware (must be last)
 app.use(errorHandling);

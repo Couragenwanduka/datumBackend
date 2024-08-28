@@ -90,6 +90,7 @@ export const findStudentById = async(studentId) => {
                    },
                },
                attendance: true,
+               results: true,
             }
         });
         return student;

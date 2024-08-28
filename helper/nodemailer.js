@@ -8,6 +8,7 @@ const htmlFilePath = path.join(__dirname, '../public', 'onboarding.html');
 const teacherHtmlFilePath = path.join(__dirname, '../public', 'onboardingTeacher.html');
 const failedResultMessageHtmlFilePath = path.join(__dirname, '../public', 'failedResult.html');
 const successResultMessageHtmlFilePath = path.join(__dirname, '../public', 'resultSuccess.html');
+const successFeedbackMessageHtmlFilePath = path.join(__dirname, '../public', 'sendFeedbackMessage.html');
 
 
 const transporter = nodemailer.createTransport({
@@ -143,6 +144,26 @@ export const sendSuccessMessage = async (email) => {
       subject: "Successful Upload",
       text: `Result uploaded successfully`,
       html: htmlContent, 
+    });
+
+    console.log("Message sent: %s", info.messageId);
+  }catch(error){
+    console.log("Error sending email: %s", error.message);
+  }
+}
+
+export const sendFeedbackSuccessMessage = async (email) => {
+  try{
+   
+    const data = await fs.readFile(successFeedbackMessageHtmlFilePath, 'utf8');
+    
+    // Send the email
+    const info = await transporter.sendMail({
+      from: process.env.googleUsername,
+      to: email,
+      subject: "Successful Upload",
+      text: `Result uploaded successfully`,
+      html: data, 
     });
 
     console.log("Message sent: %s", info.messageId);

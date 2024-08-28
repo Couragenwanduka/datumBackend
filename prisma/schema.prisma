@@ -234,3 +234,13 @@ model Subject {
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
 }
+model Feedback {
+  id          Int      @id @default(autoincrement())
+  studentId   Int
+  feedback    String
+  class       Class
+  term        Term
+  subject     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
