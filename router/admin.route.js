@@ -6,9 +6,13 @@ import { verifyAdmin } from '../middlewares/authoriation.js';
 import { createAdmin } from '../controllers/admin.controller.js';
 import {validator} from '../middlewares/validator.middleware.js';
 import { deleteEverything } from '../controllers/deleteForTest.js';
+import { getAllAdmin } from '../controllers/admin.controller.js';
 
 // Create a new admin
 adminRouter.post('/createAdmin', [validator(adminSchema)], upload.single('file') ,createAdmin);
+
+// Get all teachers
+adminRouter.get('/getAllTeachers', verifyAdmin, getAllAdmin);
 
 // Delete everything in the database
 adminRouter.delete('/deleteEverything', deleteEverything);

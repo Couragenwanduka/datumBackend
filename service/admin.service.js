@@ -60,6 +60,15 @@ const findAllTeachers = async() => {
       }
 }
 
+const getAllTeachers = async() => {
+  try {
+    const teachers = await prisma.Administrator.findMany();
+    return teachers;
+  } catch (error) {
+    throw new Error(`Error finding all teachers: ${error.message}`);
+  }
+}
+
 const deleteAllAdmin = () => {
   try {
     const result = prisma.Administrator.deleteMany();
@@ -69,4 +78,4 @@ const deleteAllAdmin = () => {
   }
 }
 
-export { saveAdminstrator, findTeacherByEmail, findAllTeachers, deleteAllAdmin};
+export { saveAdminstrator, findTeacherByEmail, findAllTeachers, deleteAllAdmin, getAllTeachers};

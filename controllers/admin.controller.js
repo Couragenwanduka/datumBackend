@@ -7,6 +7,7 @@ import { saveAdminstrator } from "../service/admin.service.js";
 import { findTeacherByEmail } from "../service/admin.service.js";
 import { getParentByEmail } from "../service/parent.service.js";
 import { sendOnboardingTeacherMessage } from "../helper/nodemailer.js";
+import { getAllTeachers } from '../service/admin.service.js';
 
 /**
  * This function creates a new admin account.
@@ -71,6 +72,19 @@ export const createAdmin = async (req, res, next) => {
     if (!sendMail) return 'Mail did not send';
 
     res.status(201).json('Adminstrator created successfully');
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+/**
+ * This function retrieves all teachers from the database.
+ */
+export const getAllAdmin = async (req, res, next) => {
+  try {
+    const teachers = await getAllTeachers();
+    res.status(200).json(teachers);
   } catch (error) {
     console.log(error);
     next(error);
