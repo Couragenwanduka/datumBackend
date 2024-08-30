@@ -17,7 +17,7 @@ const saveAdminstrator = async(admin) =>{
                 password: admin.hashedPassword,
                 phoneNumber: admin.phoneNumber,
                 address: admin.address,
-                stateOfOrign: admin.stateOfOrigin,
+                stateOfOrigin: admin.stateOfOrigin,
                 localGovernment: admin.localGovernment,
                 employmentRole: admin.employmentRole,
                 employmentDate: new Date(),

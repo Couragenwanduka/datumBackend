@@ -16,6 +16,8 @@ import attendanceRouter from './router/attendance.route.js';
 import subjectRouter from './router/subject.route.js';
 import remarkRouter from './router/remark.route.js';
 import feedbackRouter from './router/feedback.route.js';
+import classRouter from './router/class.route.js';
+import teirRouter from './router/teir.route.js';
 
 // Connect to MongoDB
 connectDb();
@@ -55,6 +57,8 @@ app.use('/api/activity', activityRouter);
 app.use('/api/subject', subjectRouter);
 app.use('/api/remark', remarkRouter);
 app.use('/api/feedback', feedbackRouter);
+app.use('/api/class', classRouter);
+app.use('/api/teir', teirRouter);
 
 // Error handling middleware (must be last)
 app.use(errorHandling);
