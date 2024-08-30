@@ -2,6 +2,7 @@ import prisma from "../prisma/dbconnect.js";
 import { parse } from 'json2csv';
 import { generateId } from "../utils/id.js";
 import { addClassTier } from "../helper/classTier.js";
+import { createEnrollments } from "./enrollment.service.js";
 
 export const saveStudent = async (studentsArray, email) => {
   try {

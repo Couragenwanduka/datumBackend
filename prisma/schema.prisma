@@ -27,13 +27,9 @@ enum ClassDivision {
   Joy
 }
 
-enum Class {
-  Jss1
-  Jss2
-  Jss3
-  Sss1
-  Sss2
-  Sss3
+enum ClassLevel {
+  JuniorSecondarySchool
+  SeniorSecondarySchool
 }
 
 enum StudentStatus {
@@ -54,13 +50,8 @@ enum Role {
   Teacher
 }
 
-enum ClassLevel {
-  JuniorSecondarySchool
-  SeniorSecondarySchool
-}
-
 model Parent {
-  id           Int       @id @default(autoincrement())
+  id           Int       @id
   surName      String
   firstName    String
   otherName    String
@@ -73,11 +64,60 @@ model Parent {
   updatedAt    DateTime  @updatedAt
 }
 
+model Tier {
+  id              Int               @id @default(autoincrement())
+  teir            ClassDivision
+  classLevel      ClassLevel
+  classId         Int
+  class           ClassTable        @relation("ClassToTier", fields: [classId], references: [id], onDelete: Cascade)
+  students        Student[]         @relation("StudentTier")
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  ClassEnrollment ClassEnrollment[]
+}
+
+model ClassTable {
+  id              Int               @id @default(autoincrement())
+  name            String            @unique
+  classTier       Tier[]            @relation("ClassToTier")
+  students        Student[]         @relation("ClassToStudents")
+  timetables      Timetable[]       @relation("ClassTimetable")
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  ClassEnrollment ClassEnrollment[]
+}
+
+model Alumina {
+  id             Int      @id @default(autoincrement())
+  studentId      Int      @unique
+  student        Student  @relation(fields: [studentId], references: [id])
+  graduationYear Int
+  currentStatus  String // Example: Employed, Further Studies, etc.
+  updatedAt      DateTime @default(now()) @updatedAt
+}
+
+model ClassEnrollment {
+  id           Int        @id @default(autoincrement())
+  studentId    Int
+  classId      Int
+  tierId       Int
+  academicYear String // e.g., "2019/2020"
+  startDate    DateTime   @default(now())
+  endDate      DateTime?
+  student      Student    @relation(fields: [studentId], references: [id])
+  class        ClassTable @relation(fields: [classId], references: [id], onDelete: Cascade)
+  tier         Tier       @relation(fields: [tierId], references: [id], onDelete: Cascade)
+}
+
 model Student {
-  id               Int           @id @default(autoincrement())
+  id               Int               @id @default(autoincrement())
   surName          String
   firstName        String
   otherName        String
+  classId          Int
+  tierId           Int
+  class            ClassTable        @relation("ClassToStudents", fields: [classId], references: [id], onDelete: Cascade)
+  tier             Tier              @relation("StudentTier", fields: [tierId], references: [id])
   dateOfBirth      DateTime
   bloodGroup       String
   gender           Gender
@@ -85,26 +125,25 @@ model Student {
   stateOfOrigin    String
   localGovernment  String
   address          String
-  enrollmentDate   DateTime      @default(now())
-  class            Class
-  classTier        ClassDivision
-  term             Term
+  enrollmentDate   DateTime          @default(now())
   picture          String
   previousSchool   String
   parentEmail      String
-  parent           Parent        @relation("StudentParent", fields: [parentEmail], references: [email])
-  results          Result[]      @relation("StudentResult")
-  attendance       Attendance[]  @relation("StudentAttendance")
-  remarks          Remarks[]     @relation("StudentRemarks")
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-  status           StudentStatus @default(Active)
+  parent           Parent            @relation("StudentParent", fields: [parentEmail], references: [email])
+  results          Result[]          @relation("StudentResult")
+  attendance       Attendance[]      @relation("StudentAttendance")
+  remarks          Remarks[]         @relation("StudentRemarks")
+  alumina          Alumina?          // Optional relation to Alumina model
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  status           StudentStatus     @default(Active)
   statusReason     String?
   statusChangeDate DateTime?
+  enrollments      ClassEnrollment[]
 }
 
 model Administrator {
-  id              Int         @id @default(autoincrement())
+  id              Int          @id @default(autoincrement())
   surName         String
   firstName       String
   otherName       String
@@ -112,24 +151,24 @@ model Administrator {
   bloodGroup      String
   dateOfBirth     DateTime
   nationality     String
-  email           String      @unique
+  email           String       @unique
   password        String
-  phoneNumber     String      @unique
+  phoneNumber     String       @unique
   address         String
-  stateOfOrign    String
+  stateOfOrigin   String
   localGovernment String
   employmentRole  String
-  employmentDate  DateTime      @default(now())
+  employmentDate  DateTime     @default(now())
   qualification   String
   picture         String
-  role            Role          @default(Teacher)
-  gradeLevel      String        @default("levelOne")
-  step            String        @default("stepOne")
-  results         Result[]      @relation("ResultTeacher")
-  timetables      Timetable[]   @relation("TimetableTeacher")
-  attendance      Attendance[]  @relation("Teacher")
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  role            Role         @default(Teacher)
+  gradeLevel      String       @default("levelOne")
+  step            String       @default("stepOne")
+  results         Result[]     @relation("ResultTeacher")
+  timetables      Timetable[]  @relation("TimetableTeacher")
+  attendance      Attendance[] @relation("Teacher")
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
 }
 
 model Result {
@@ -140,7 +179,7 @@ model Result {
   otherName   String
   subject     String
   class       String
-  term        String
+  term        Term
   test        String
   assignment  String
   midTermTest String
@@ -157,18 +196,18 @@ model Result {
 }
 
 model Attendance {
-  id        Int            @id @default(autoincrement())
-  date      DateTime       @default(now())
-  dayOfWeek String         @default("Monday")
-  time      String         @default("00:00")
-  teacherId Int            @default(1)
-  class     String         @default("DefaultClass")
-  classTier ClassDivision  @default(Purity)
+  id        Int           @id @default(autoincrement())
+  date      DateTime      @default(now())
+  dayOfWeek String        @default("Monday")
+  time      String        @default("00:00")
+  teacherId Int
+  class     String        @default("DefaultClass")
+  classTier ClassDivision @default(Purity)
   status    Status
-  studentId Int           
-  student   Student        @relation("StudentAttendance", fields: [studentId], references: [id])
-  teacher   Administrator  @relation("Teacher", fields: [teacherId], references: [id])
-  createdAt DateTime       @default(now())
+  studentId Int
+  student   Student       @relation("StudentAttendance", fields: [studentId], references: [id])
+  teacher   Administrator @relation("Teacher", fields: [teacherId], references: [id])
+  createdAt DateTime      @default(now())
 }
 
 model Timetable {
@@ -176,7 +215,8 @@ model Timetable {
   dayOfWeek String
   startTime DateTime
   endTime   DateTime
-  class     Class
+  classId   Int
+  class     ClassTable    @relation("ClassTimetable", fields: [classId], references: [id])
   classTier ClassDivision
   subject   String
   teacherId Int
@@ -188,7 +228,7 @@ model Timetable {
 model SchemeOfWork {
   id         Int      @id @default(autoincrement())
   subject    String
-  class      Class
+  class      String
   term       Term
   topics     Topic[]  @relation("SchemeTopics")
   objectives String
@@ -220,7 +260,7 @@ model Remarks {
   studentId Int
   student   Student  @relation("StudentRemarks", fields: [studentId], references: [id])
   remark    String
-  class     Class
+  class     String
   term      Term
   subject   String
   createdAt DateTime @default(now())
@@ -234,13 +274,14 @@ model Subject {
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
 }
+
 model Feedback {
-  id          Int      @id @default(autoincrement())
-  studentId   Int
-  feedback    String
-  class       Class
-  term        Term
-  subject     String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  studentId Int
+  feedback  String
+  class     String
+  term      Term
+  subject   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
