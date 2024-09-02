@@ -1,4 +1,5 @@
 import BadRequest from './error.js';
+import { Prisma } from '@prisma/client';
 
 const errorHandling = (err, req, res, next) => {
   // Handle custom BadRequest errors
@@ -43,6 +44,16 @@ const errorHandling = (err, req, res, next) => {
       message: "Unable to connect to the database. Please check your connection and try again.",
       success: false,
     });
+  }
+
+  // Handle Prisma unique constraint violation errors
+  if (err instanceof Prisma.PrismaClientKnownRequestError) {
+    if (err.code === 'P2002' && err.meta.target.includes('phoneNumber')) {
+      return res.status(400).json({
+        message: 'A parent with this phone number already exists.',
+        success: false,
+      });
+    }
   }
 
   // Log any unhandled errors for internal tracking
