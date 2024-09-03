@@ -9,7 +9,7 @@ import { deleteEverything } from '../controllers/deleteForTest.js';
 import { getAllAdmin } from '../controllers/admin.controller.js';
 
 // Create a new admin
-adminRouter.post('/createAdmin', [validator(adminSchema)], upload.single('file') ,createAdmin);
+adminRouter.post('/createAdmin',  upload.single('file'),[validator(adminSchema)] ,createAdmin);
 
 // Get all teachers
 adminRouter.get('/getAllTeachers', verifyAdmin, getAllAdmin);
