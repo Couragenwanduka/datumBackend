@@ -12,7 +12,7 @@ import { getAllAdmin } from '../controllers/admin.controller.js';
 adminRouter.post('/createAdmin',  upload.single('file'),[validator(adminSchema)] ,createAdmin);
 
 // Get all teachers
-adminRouter.get('/getAllTeachers', verifyAdmin, getAllAdmin);
+adminRouter.get('/getAllTeachers',  getAllAdmin);
 
 // Delete everything in the database
 adminRouter.delete('/deleteEverything', deleteEverything);
