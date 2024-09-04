@@ -14,6 +14,7 @@ export const createResult = async (req, res) => {
     if (email === ' ') return res.status(400).send('Email is required.');
 
     const file = req.file;
+    console.log(file)
     if (!file) return res.status(400).send('No file uploaded.');
 
     const data = await readCsv(file.path);
