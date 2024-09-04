@@ -94,6 +94,15 @@ const viewResultByStudentId = async(studentId) => {
     }
 }
 
+const getAllResults = async() => {
+    try{
+        const result = await prisma.result.findMany()
+        return result
+    }catch(error){
+        console.log('Error getting all results:', error.message)
+    }
+}
+
 const deleteAllResults = async() => {
     try{
         await prisma.result.deleteMany()
@@ -103,4 +112,4 @@ const deleteAllResults = async() => {
     }
 }
 
-export { saveResult, viewResultByGradelevelAndTerm, viewingResultsByGradelevelAndTeacher, viewResultByStudentId, deleteAllResults }
+export { saveResult, viewResultByGradelevelAndTerm, viewingResultsByGradelevelAndTeacher, viewResultByStudentId, deleteAllResults,  getAllResults  }

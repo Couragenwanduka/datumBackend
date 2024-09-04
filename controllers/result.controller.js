@@ -4,7 +4,7 @@ import { validateResult } from "../schema/result.joi.js";
 import { sendSuccessMessage } from "../helper/nodemailer.js";
 import { findStudentById } from "../service/student.service.js";
 import { sendFailedUploadMessage } from "../helper/nodemailer.js";
-import { saveResult, viewResultByGradelevelAndTerm, viewingResultsByGradelevelAndTeacher, viewResultByStudentId } from '../service/result.service.js';
+import { saveResult, viewResultByGradelevelAndTerm, viewingResultsByGradelevelAndTeacher, viewResultByStudentId, getAllResults  } from '../service/result.service.js';
 
 
 export const createResult = async (req, res) => {
@@ -105,5 +105,15 @@ export const getResultByGradelevelAndTeacher = async(req, res) => {
     return results;
   }catch(error){
     console.log('Error getting result:', error.message)
+  }
+}
+
+
+export const getAllResult = async(req, res) => {
+  try{
+    const results = await getAllResults();
+    res.status(200).json(results);
+  }catch(error){
+    console.log('Error getting all results:', error.message)
   }
 }
