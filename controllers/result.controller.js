@@ -4,17 +4,18 @@ import { validateResult } from "../schema/result.joi.js";
 import { sendSuccessMessage } from "../helper/nodemailer.js";
 import { findStudentById } from "../service/student.service.js";
 import { sendFailedUploadMessage } from "../helper/nodemailer.js";
+import BadRequest from "../error/error.js";
 import { saveResult, viewResultByClassAndTerm, viewingResultsByClassAndTeacher, viewResultByStudentId, getAllResults  } from '../service/result.service.js';
 
 
-export const createResult = async (req, res) => {
+export const createResult = async (req, res, next) => {
   try {
 
     const {email} = req.body; 
-    if (email === ' ') return res.status(400).send('Email is required.');
+    if (email === ' ')  throw new BadRequest('Please enter a valid email');
 
     const file = req.file;
-    if (!file) return res.status(400).send('No file uploaded.');
+    if (!file) throw new BadRequest('No file Uploaded');
 
     const data = await readCsv(file.path);
    
@@ -63,12 +64,12 @@ export const createResult = async (req, res) => {
     
   } catch (error) {
     console.log('Error creating result:', error);
-    return res.status(500).json({ error: 'Internal Server Error' });
+    next(error)
   }
 };
 
 
-export const getResultByClassAndTerm = async(req, res) => {
+export const getResultByClassAndTerm = async(req, res, next) => {
   try{
     const { gradeLevel, term } = req.params;
     if(gradeLevel === ' '|| term === ' ')  return res.status(400).json({message:'invalid grade level specified'});
@@ -77,16 +78,16 @@ export const getResultByClassAndTerm = async(req, res) => {
     res.status(200).json({results})
   }catch(error){
     console.log('Error getting result:', error.message)
-    return res.status(500).json({ error: 'Internal Server Error' });
+    next(error)
   }
 
 }
 
 
-export const getResultByStudentId = async(req, res) => {
+export const getResultByStudentId = async(req, res, next) => {
   try{
     const { studentId, Class, term } = req.params;
-    console.log(Class)
+   
     if(studentId ===' ' )  return res.status(400).json({message:'invalid student ID specified'});
     if( Class === ' ' )  return res.status(400).json({message:'invalid Class  specified'});
     if( term === '')  return res.status(400).json({message:'invalid Term specified'});
@@ -95,12 +96,12 @@ export const getResultByStudentId = async(req, res) => {
     res.status(200).json({result})
   }catch(error){
     console.log('Error getting result:', error.message)
-    return res.status(500).json({ error: 'Internal Server Error' });
+    next(error)
   }
 }
 
 
-export const getResultByClassAndTeacher = async(req, res) => {
+export const getResultByClassAndTeacher = async(req, res, next) => {
   try{
     const { gradelevel, teacher } = req.params;
     if(gradelevel ===' '|| teacher ===' ')  return res.status(400).json({message:'invalid grade level or teacher specified'});
@@ -109,17 +110,17 @@ export const getResultByClassAndTeacher = async(req, res) => {
     res.status(200).json({results})
   }catch(error){
     console.log('Error getting result:', error.message)
-    return res.status(500).json({ error: 'Internal Server Error' });
+    next(error)
   }
 }
 
 
-export const getAllResult = async(req, res) => {
+export const getAllResult = async(req, res, next) => {
   try{
     const results = await getAllResults();
     res.status(200).json(results);
   }catch(error){
     console.log('Error getting all results:', error.message)
-    return res.status(500).json({ error: 'Internal Server Error' });
+    next(error)
   }
 }
