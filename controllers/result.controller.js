@@ -4,7 +4,7 @@ import { validateResult } from "../schema/result.joi.js";
 import { sendSuccessMessage } from "../helper/nodemailer.js";
 import { findStudentById } from "../service/student.service.js";
 import { sendFailedUploadMessage } from "../helper/nodemailer.js";
-import { saveResult, viewResultByGradelevelAndTerm, viewingResultsByGradelevelAndTeacher, viewResultByStudentId, getAllResults  } from '../service/result.service.js';
+import { saveResult, viewResultByClassAndTerm, viewingResultsByClassAndTeacher, viewResultByStudentId, getAllResults  } from '../service/result.service.js';
 
 
 export const createResult = async (req, res) => {
@@ -14,7 +14,6 @@ export const createResult = async (req, res) => {
     if (email === ' ') return res.status(400).send('Email is required.');
 
     const file = req.file;
-    console.log(file)
     if (!file) return res.status(400).send('No file uploaded.');
 
     const data = await readCsv(file.path);
@@ -69,15 +68,16 @@ export const createResult = async (req, res) => {
 };
 
 
-export const getResultByGradeLevelAndTerm = async(req, res) => {
+export const getResultByClassAndTerm = async(req, res) => {
   try{
     const { gradeLevel, term } = req.params;
     if(gradeLevel === ' '|| term === ' ')  return res.status(400).json({message:'invalid grade level specified'});
 
-    const results = await viewResultByGradelevelAndTerm(gradeLevel, term);
-    return results;
+    const results = await viewResultByClassAndTerm(gradeLevel, term);
+    res.status(200).json({results})
   }catch(error){
     console.log('Error getting result:', error.message)
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 
 }
@@ -85,26 +85,31 @@ export const getResultByGradeLevelAndTerm = async(req, res) => {
 
 export const getResultByStudentId = async(req, res) => {
   try{
-    const { studentId } = req.params;
-    if(studentId ===' ')  return res.status(400).json({message:'invalid student ID specified'});
+    const { studentId, Class, term } = req.params;
+    console.log(Class)
+    if(studentId ===' ' )  return res.status(400).json({message:'invalid student ID specified'});
+    if( Class === ' ' )  return res.status(400).json({message:'invalid Class  specified'});
+    if( term === '')  return res.status(400).json({message:'invalid Term specified'});
 
-    const result = await viewResultByStudentId(studentId);
-    return result;
+    const result = await viewResultByStudentId(studentId,Class, term);
+    res.status(200).json({result})
   }catch(error){
     console.log('Error getting result:', error.message)
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
 
-export const getResultByGradelevelAndTeacher = async(req, res) => {
+export const getResultByClassAndTeacher = async(req, res) => {
   try{
     const { gradelevel, teacher } = req.params;
     if(gradelevel ===' '|| teacher ===' ')  return res.status(400).json({message:'invalid grade level or teacher specified'});
     
-    const results = await viewingResultsByGradelevelAndTeacher(gradelevel, teacher);
-    return results;
+    const results = await viewingResultsByClassAndTeacher(gradelevel, teacher);
+    res.status(200).json({results})
   }catch(error){
     console.log('Error getting result:', error.message)
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
@@ -115,5 +120,6 @@ export const getAllResult = async(req, res) => {
     res.status(200).json(results);
   }catch(error){
     console.log('Error getting all results:', error.message)
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }

@@ -151,15 +151,13 @@ export const getAllFeedbackOnMongoDb = async(term) => {
     }
 }
 
-export const getFeedbackByStudentIdAndTermOnPostgress = async(studentId, term) => {
+export const getFeedbackByStudentIdAndTermOnPostgress = async(studentId, Class,term) => {
     try {
-        const feedback = await prisma.findOne({
+        const feedback = await prisma.feedback.findMany({
             where: {
-                studentId,
+                studentId:parseInt(studentId,10),
+                class:Class,
                 term,
-            },
-            include: {
-                student: true,
             },
         })
         return feedback;
@@ -168,12 +166,21 @@ export const getFeedbackByStudentIdAndTermOnPostgress = async(studentId, term) =
         throw error;
     }
 }
-export const getFeedbackByStudentIdAndTermOnMongodb = async(studentId, term) =>{
+export const getFeedbackByStudentIdAndTermOnMongodb = async(studentId, Class,term) =>{
     try {
-        const feedback = await Feedback.findOne({studentId, term});
+        const feedback = await Feedback.findOne({studentId, term, class:Class});
         return feedback;
     } catch (error) {
         console.log('Error getting feedback by student ID and term from MongoDB:', error.message);
+        throw error;
+    }
+}
+export const deleteAllFeedback = async() => {
+    try {
+        await prisma.feedback.deleteMany();
+        console.log('All feedback deleted from Postgres');
+    } catch (error) {
+        console.log('Error deleting all feedback from Postgres:', error.message);
         throw error;
     }
 }

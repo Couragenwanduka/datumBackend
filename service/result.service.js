@@ -36,11 +36,11 @@ const saveResult = async(studentId, surName, firstName, otherName, subject, Clas
    }
 }
 
-const viewResultByGradelevelAndTerm = async(gradelevel, term) => {
+const viewResultByClassAndTerm = async(Class, term) => {
     try{
         const result = await prisma.Result.findMany({
             where:{
-                gradelevel,
+                class:Class,
                 term,
             },
             include:{
@@ -57,11 +57,11 @@ const viewResultByGradelevelAndTerm = async(gradelevel, term) => {
     }
 }
 
-const viewingResultsByGradelevelAndTeacher = async(gradelevel, teacher) => {
+const viewingResultsByClassAndTeacher = async(Class, teacher) => {
   try{
       const result = await prisma.Result.findMany({
           where:{
-              gradelevel,
+              class:Class,
               teacher,
           },
           include:{
@@ -74,18 +74,13 @@ const viewingResultsByGradelevelAndTeacher = async(gradelevel, teacher) => {
   }
 }
 
-const viewResultByStudentId = async(studentId) => {
+const viewResultByStudentId = async(studentId,Class,term) => {
     try{
         const result = await prisma.Result.findMany({
             where:{
-                studentId,
-            },
-            include:{
-                student:{
-                    include:{
-                        parent:true,
-                    },
-                },
+               studentId: parseInt(studentId,10),
+                class: Class,
+                term
             },
         })
         return result
@@ -112,4 +107,4 @@ const deleteAllResults = async() => {
     }
 }
 
-export { saveResult, viewResultByGradelevelAndTerm, viewingResultsByGradelevelAndTeacher, viewResultByStudentId, deleteAllResults,  getAllResults  }
+export { saveResult, viewResultByClassAndTerm, viewingResultsByClassAndTeacher, viewResultByStudentId, deleteAllResults,  getAllResults  }

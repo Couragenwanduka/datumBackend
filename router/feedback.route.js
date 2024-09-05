@@ -9,8 +9,8 @@ import { getAllFeedbackSchema } from '../schema/feedback.joi.js';
 import { getFeedbackByStudentIdandTermSchema  } from '../schema/feedback.joi.js';
 
 
-feedbackRouter.get('/feedback', [validator(createFeedbackSchema)],createFeedback)
+feedbackRouter.post('/feedback', [validator(createFeedbackSchema)],createFeedback)
 feedbackRouter.get('/feedback/all', [validator(getAllFeedbackSchema)],getAllFeedback)
-feedbackRouter.get('/feedback/:studentId/:term', [validator(getFeedbackByStudentIdandTermSchema, 'params')],getFeedbackByStudentIdAndTerm)
+feedbackRouter.get('/feedback/:studentId/:Class/:term', [validator(getFeedbackByStudentIdandTermSchema, 'params')],getFeedbackByStudentIdAndTerm)
 
 export default feedbackRouter;

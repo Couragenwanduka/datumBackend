@@ -37,16 +37,12 @@ export const getAllFeedback = async(req, res, next) => {
 
 export const getFeedbackByStudentIdAndTerm = async(req, res, next) => {
     try{
-        const {studentId, term} = req.params;
+        const {studentId, term, Class} = req.params;
 
-        const feedbackOnMongoDb = await getFeedbackByStudentIdAndTermOnMongodb(studentId, term);
-        const feedbackOnPostgres = await getFeedbackByStudentIdAndTermOnPostgress(studentId, term);
+        // const feedbackOnMongoDb = await getFeedbackByStudentIdAndTermOnMongodb(studentId, Class,term);
+        const feedbackOnPostgres = await getFeedbackByStudentIdAndTermOnPostgress(studentId, Class,term);
 
-        if(feedbackOnMongoDb.length === 0 && feedbackOnPostgres.length === 0){
-            throw new BadRequest("No feedback found for the given student and term")
-        }
-
-        res.status(200).json({feedbackOnMongoDb, feedbackOnPostgres})
+        res.status(200).json({ feedbackOnPostgres})
     }catch(error){
         next(error);
     }

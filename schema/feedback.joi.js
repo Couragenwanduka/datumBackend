@@ -1,3 +1,4 @@
+import { Class } from "@prisma/client";
 import Joi from "joi";
 
 export const createFeedbackSchema = Joi.object({
@@ -20,9 +21,13 @@ export const getAllFeedbackSchema = Joi.object({
 })
 
 export const getFeedbackByStudentIdandTermSchema = Joi.object({
-    studentId:Joi.number().required().messages({
+    studentId:Joi.string().required().messages({
         'number.base': 'Student ID should be a type of number',
         'any.required': 'Student ID is required'
+    }),
+    Class:Joi.string().required().messages({
+        'string.base': 'Class should be a type of string',
+        'any.required': 'Class is required'
     }),
     term: Joi.string().required().valid('FirstTerm','SecondTerm','ThirdTerm').messages({
         'string.base': 'Term should be a type of string',
