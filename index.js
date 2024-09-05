@@ -1,8 +1,10 @@
 import path from 'path';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import 'express-async-errors'; 
 import express from 'express';
 import { fileURLToPath } from 'url';
+import connectDb from './config/connectDb.js';
 import promoteStudents from './helper/cron.js'; 
 import router from './router/student.route.js';
 import adminRouter from './router/admin.route.js';
@@ -13,6 +15,10 @@ import activityRouter from './router/activity.route.js';
 import attendanceRouter from './router/attendance.route.js';
 import subjectRouter from './router/subject.route.js';
 import remarkRouter from './router/remark.route.js';
+import feedbackRouter from './router/feedback.route.js';  
+
+// Connect to MongoDB
+connectDb();
 
 // Load environment variables
 dotenv.config();
@@ -26,9 +32,18 @@ const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const corsOptions = {
+  origin: '*',
+  methods: ['GET','POST', 'PUT', 'DELETE', 'PATCH'],
+  credentials: true,
+  preflightContinue: true,
+  optionsSuccessStatus: 200 
+};
+
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors(corsOptions))
 
 // Route handlers
 app.use('/api/student', router);
@@ -39,10 +54,10 @@ app.use('/api', attendanceRouter);
 app.use('/api/activity', activityRouter);
 app.use('/api/subject', subjectRouter);
 app.use('/api/remark', remarkRouter);
+app.use('/api/feedback', feedbackRouter); 
 
 // Error handling middleware (must be last)
 app.use(errorHandling);
-
 
 app.get("/", function (req,res){
   res.send("Welcome to Datum Development School App... Delevoped by Courage Nduka and Ani Okechukwu")

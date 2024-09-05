@@ -11,4 +11,3 @@ prisma.$connect()
     });
 
 export default prisma;
-
